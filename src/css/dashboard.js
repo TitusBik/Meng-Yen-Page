@@ -6,7 +6,7 @@ const userId = document.querySelector("[data-user-id]");
 const createdAt = document.querySelector("[data-created-at]");
 const lastSignIn = document.querySelector("[data-last-sign-in]");
 const errorMessage = document.querySelector("[data-dashboard-error]");
-const logoutButton = document.querySelector("[data-logout]");
+const logoutButton = document.querySelector("[data-dashboard-action]");
 
 const showError = (message) => {
   errorMessage.textContent = message;

@@ -17,22 +17,7 @@
     />
   </head>
   <body class="min-h-screen bg-paper text-ink antialiased">
-    <header class="border-b border-ink/10 bg-paper">
-      <div
-        class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-10"
-      >
-        <a href="../index.html" class="font-display text-xl font-extrabold">
-          Meng-Yen<span class="text-muted">.</span>
-        </a>
-        <button
-          type="button"
-          data-logout
-          class="rounded-full border border-ink/20 px-4 py-2 text-sm font-semibold transition hover:bg-ink hover:text-paper"
-        >
-          Log out
-        </button>
-      </div>
-    </header>
+    <div data-navbar></div>
 
     <main class="mx-auto max-w-7xl px-6 py-10 lg:px-10 lg:py-14">
       <section class="mb-10">
@@ -127,6 +112,7 @@
 
       <p data-dashboard-error class="mt-8 hidden text-sm font-medium text-red-700"></p>
     </main>
+    <script type="module" src="../src/css/navbar.js"></script>
     <script type="module" src="../src/css/dashboard.js"></script>
   </body>
 </html>
