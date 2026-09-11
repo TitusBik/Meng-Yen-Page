@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Meng-Yen personal property management dashboard"
+    />
+    <title>Dashboard — Meng-Yen</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" crossorigin src="/assets/dashboard-DVdiYHq0.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/supabase-CL3eS8N3.js">
+  </head>
+  <body class="min-h-screen bg-paper text-ink antialiased">
+    <header class="border-b border-ink/10 bg-paper">
+      <div
+        class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-10"
+      >
+        <a href="../index.html" class="font-display text-xl font-extrabold">
+          Meng-Yen<span class="text-muted">.</span>
+        </a>
+        <button
+          type="button"
+          data-logout
+          class="rounded-full border border-ink/20 px-4 py-2 text-sm font-semibold transition hover:bg-ink hover:text-paper"
+        >
+          Log out
+        </button>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-7xl px-6 py-10 lg:px-10 lg:py-14">
+      <section class="mb-10">
+        <p class="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-muted">
+          Personal dashboard
+        </p>
+        <h1 class="font-display text-4xl font-extrabold tracking-tight sm:text-5xl">
+          Welcome back<span class="text-muted">,</span>
+          <span data-user-name>there</span><span class="text-muted">.</span>
+        </h1>
+        <p class="mt-4 max-w-2xl text-muted">
+          Manage your account and keep your property listings organised in one
+          place.
+        </p>
+      </section>
+
+      <section class="grid gap-5 md:grid-cols-3" aria-label="Dashboard summary">
+        <article class="rounded-2xl bg-ink p-6 text-paper">
+          <p class="text-sm text-paper/60">Account status</p>
+          <p class="mt-4 font-display text-2xl font-bold">Active</p>
+          <p class="mt-2 text-sm text-paper/60">Your account is ready to use.</p>
+        </article>
+        <article class="rounded-2xl border border-ink/10 bg-white p-6">
+          <p class="text-sm text-muted">Property listings</p>
+          <p class="mt-4 font-display text-2xl font-bold">0</p>
+          <p class="mt-2 text-sm text-muted">Listings will appear here.</p>
+        </article>
+        <article class="rounded-2xl border border-ink/10 bg-white p-6">
+          <p class="text-sm text-muted">Last sign-in</p>
+          <p data-last-sign-in class="mt-4 font-display text-lg font-bold">—</p>
+          <p class="mt-2 text-sm text-muted">From your Supabase account.</p>
+        </article>
+      </section>
+
+      <section class="mt-10 grid gap-8 lg:grid-cols-[1fr_1.4fr]">
+        <article class="rounded-2xl border border-ink/10 bg-white p-6 sm:p-8">
+          <div class="mb-6">
+            <p class="text-sm font-semibold uppercase tracking-[0.16em] text-muted">
+              Your information
+            </p>
+            <h2 class="mt-2 font-display text-2xl font-extrabold">
+              Personal details
+            </h2>
+          </div>
+          <dl class="space-y-5">
+            <div class="border-b border-ink/10 pb-4">
+              <dt class="text-sm text-muted">Email</dt>
+              <dd data-user-email class="mt-1 break-all font-medium">Loading...</dd>
+            </div>
+            <div class="border-b border-ink/10 pb-4">
+              <dt class="text-sm text-muted">User ID</dt>
+              <dd data-user-id class="mt-1 break-all font-mono text-xs">Loading...</dd>
+            </div>
+            <div>
+              <dt class="text-sm text-muted">Account created</dt>
+              <dd data-created-at class="mt-1 font-medium">Loading...</dd>
+            </div>
+          </dl>
+        </article>
+
+        <article class="rounded-2xl border border-dashed border-ink/25 bg-white p-6 sm:p-8">
+          <div class="flex flex-col justify-between gap-5 sm:flex-row sm:items-start">
+            <div>
+              <p class="text-sm font-semibold uppercase tracking-[0.16em] text-muted">
+                Property management
+              </p>
+              <h2 class="mt-2 font-display text-2xl font-extrabold">
+                Your property listings
+              </h2>
+              <p class="mt-3 max-w-xl text-muted">
+                This space is ready for adding, editing, and managing your
+                property listings.
+              </p>
+            </div>
+            <button
+              type="button"
+              disabled
+              class="cursor-not-allowed rounded-full bg-lime px-5 py-3 text-sm font-semibold text-ink opacity-60"
+            >
+              Add property — coming soon
+            </button>
+          </div>
+          <div class="mt-8 rounded-xl bg-paper p-6">
+            <p class="font-semibold">No properties yet</p>
+            <p class="mt-2 text-sm text-muted">
+              When the listing feature is enabled, your properties will show
+              here with photos, prices, locations, and availability.
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <p data-dashboard-error class="mt-8 hidden text-sm font-medium text-red-700"></p>
+    </main>
+  </body>
+</html>

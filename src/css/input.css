@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #17211f;
+  --color-paper: #f6f7f2;
+  --color-lime: #d8f36a;
+  --color-muted: #64716c;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Manrope", "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+@source "../../*.html";
+@source "../../pages/**/*.html";
+@source "../../src/**/*.html";
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: #d8f36a;
+  color: #17211f;
+}

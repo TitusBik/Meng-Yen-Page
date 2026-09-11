@@ -1,0 +1,105 @@
+<header
+  class="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 lg:px-10"
+>
+  <a
+    href="#"
+    data-navbar-home
+    class="font-display text-xl font-extrabold tracking-tight"
+    >Meng-Yen<span class="text-muted">.</span></a
+  >
+  <nav
+    class="hidden items-center gap-8 text-sm font-medium text-muted md:flex"
+    aria-label="Main navigation"
+  >
+    <a class="transition hover:text-ink" href="#" data-navbar-home
+      >Home</a
+    >
+    <a
+      class="transition hover:text-ink"
+      href="#"
+      data-navbar-commercial
+      >Commercial</a
+    >
+    <a
+      class="transition hover:text-ink"
+      href="#"
+      data-navbar-residential
+      >Residential</a
+    >
+    <a
+      class="transition hover:text-ink"
+      href="#"
+      data-navbar-new-launch-project
+      >New Launch Project</a
+    >
+    <a class="transition hover:text-ink" href="#" data-navbar-about>About Me</a>
+    <a class="transition hover:text-ink" href="#" data-navbar-contact>Contact Me</a>
+  </nav>
+  <button
+    type="button"
+    data-login-open
+    class="rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-paper transition hover:bg-muted"
+    aria-haspopup="dialog"
+    aria-controls="login-dialog"
+  >
+    Login
+  </button>
+
+  <div
+    data-login-dialog
+    id="login-dialog"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-ink/40 px-6 backdrop-blur-sm"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="login-dialog-title"
+    aria-hidden="true"
+  >
+    <div class="relative w-full max-w-sm rounded-2xl bg-paper p-8 shadow-2xl">
+      <button
+        type="button"
+        data-login-close
+        class="absolute right-5 top-5 text-2xl leading-none text-muted transition hover:text-ink"
+        aria-label="Close login dialog"
+      >
+        &times;
+      </button>
+      <h2 id="login-dialog-title" class="font-display text-2xl font-extrabold">
+        Login
+      </h2>
+      <form data-login-form class="mt-6 space-y-4">
+        <div>
+          <label for="login-email" class="mb-2 block text-sm font-medium"
+            >Email</label
+          >
+          <input
+            id="login-email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            required
+            class="w-full rounded-lg border border-muted/30 bg-white px-4 py-3 outline-none transition focus:border-ink"
+          />
+        </div>
+        <div>
+          <label for="login-password" class="mb-2 block text-sm font-medium"
+            >Password</label
+          >
+          <input
+            id="login-password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required
+            class="w-full rounded-lg border border-muted/30 bg-white px-4 py-3 outline-none transition focus:border-ink"
+          />
+        </div>
+        <button
+          type="submit"
+          class="w-full rounded-lg bg-ink px-4 py-3 font-semibold text-paper transition hover:bg-muted"
+        >
+          Login
+        </button>
+      </form>
+    </div>
+  </div>
+</header>
