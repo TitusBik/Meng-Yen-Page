@@ -8,6 +8,7 @@ module.exports = defineConfig({
         main: resolve(__dirname, "index.html"),
         commercial: resolve(__dirname, "commercial/index.html"),
         dashboard: resolve(__dirname, "dashboard/index.html"),
+        addListing: resolve(__dirname, "dashboard/add-listing/index.html"),
       },
     },
   },

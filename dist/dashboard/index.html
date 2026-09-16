@@ -15,104 +15,201 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap"
       rel="stylesheet"
     />
-    <script type="module" crossorigin src="/assets/dashboard-CcC7OWXa.js"></script>
-    <link rel="modulepreload" crossorigin href="/assets/navbar-DkxEIeKC.js">
+    <script type="module" crossorigin src="/assets/dashboard-91c6XCEq.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/navbar-DaxuI7kr.js">
   </head>
   <body class="min-h-screen bg-paper text-ink antialiased">
     <div data-navbar></div>
 
-    <main class="mx-auto max-w-7xl px-6 py-10 lg:px-10 lg:py-14">
-      <section class="mb-10">
-        <p class="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-muted">
-          Personal dashboard
-        </p>
-        <h1 class="font-display text-4xl font-extrabold tracking-tight sm:text-5xl">
-          Welcome back<span class="text-muted">,</span>
-          <span data-user-name>there</span><span class="text-muted">.</span>
-        </h1>
-        <p class="mt-4 max-w-2xl text-muted">
-          Manage your account and keep your property listings organised in one
-          place.
-        </p>
+    <main class="mx-auto max-w-7xl px-6 pb-16 pt-8 lg:px-10 lg:pb-24 lg:pt-12">
+      <section class="relative overflow-hidden rounded-[2rem] bg-ink px-6 py-8 text-paper sm:px-10 sm:py-10">
+        <div class="relative z-10 max-w-2xl">
+          <p class="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-lime">
+            Personal dashboard
+          </p>
+          <h1 class="font-display text-4xl font-extrabold tracking-tight sm:text-5xl">
+            Welcome back<span class="text-lime">,</span>
+            <span data-user-name>there</span><span class="text-lime">.</span>
+          </h1>
+          <p class="mt-4 max-w-xl text-paper/70">
+            Your space to manage your profile, keep listings organised, and
+            turn your next property idea into a plan.
+          </p>
+        </div>
+        <div class="absolute -right-16 -top-24 h-64 w-64 rounded-full bg-lime/20 blur-3xl"></div>
+        <div class="absolute -bottom-32 right-24 h-56 w-56 rounded-full border-[32px] border-paper/5"></div>
       </section>
 
-      <section class="grid gap-5 md:grid-cols-3" aria-label="Dashboard summary">
-        <article class="rounded-2xl bg-ink p-6 text-paper">
-          <p class="text-sm text-paper/60">Account status</p>
-          <p class="mt-4 font-display text-2xl font-bold">Active</p>
-          <p class="mt-2 text-sm text-paper/60">Your account is ready to use.</p>
-        </article>
-        <article class="rounded-2xl border border-ink/10 bg-white p-6">
-          <p class="text-sm text-muted">Property listings</p>
-          <p class="mt-4 font-display text-2xl font-bold">0</p>
-          <p class="mt-2 text-sm text-muted">Listings will appear here.</p>
-        </article>
-        <article class="rounded-2xl border border-ink/10 bg-white p-6">
-          <p class="text-sm text-muted">Last sign-in</p>
-          <p data-last-sign-in class="mt-4 font-display text-lg font-bold">—</p>
-          <p class="mt-2 text-sm text-muted">From your Supabase account.</p>
-        </article>
-      </section>
-
-      <section class="mt-10 grid gap-8 lg:grid-cols-[1fr_1.4fr]">
-        <article class="rounded-2xl border border-ink/10 bg-white p-6 sm:p-8">
-          <div class="mb-6">
-            <p class="text-sm font-semibold uppercase tracking-[0.16em] text-muted">
-              Your information
-            </p>
-            <h2 class="mt-2 font-display text-2xl font-extrabold">
-              Personal details
-            </h2>
+      <section class="mt-6 grid gap-4 sm:grid-cols-3" aria-label="Dashboard summary">
+        <article class="rounded-2xl border border-ink/10 bg-white p-5">
+          <div class="flex items-center justify-between">
+            <p class="text-sm font-medium text-muted">Active listings</p>
+            <span class="rounded-full bg-lime px-2.5 py-1 text-xs font-bold text-ink">LIVE</span>
           </div>
-          <dl class="space-y-5">
-            <div class="border-b border-ink/10 pb-4">
+          <p data-listing-count class="mt-5 font-display text-4xl font-extrabold">0</p>
+          <p class="mt-1 text-sm text-muted">Your property portfolio</p>
+        </article>
+        <article class="rounded-2xl border border-ink/10 bg-white p-5">
+          <p class="text-sm font-medium text-muted">Profile status</p>
+          <p class="mt-5 font-display text-2xl font-extrabold">Looking good</p>
+          <p class="mt-1 text-sm text-muted">Keep your details up to date</p>
+        </article>
+        <a href="add-listing/" class="group rounded-2xl bg-lime p-5 transition hover:brightness-95">
+          <p class="text-sm font-semibold text-ink/70">Ready for the next move?</p>
+          <p class="mt-5 font-display text-2xl font-extrabold">Add a property <span class="inline-block transition group-hover:translate-x-1">→</span></p>
+          <p class="mt-1 text-sm text-ink/70">Create your first listing</p>
+        </a>
+      </section>
+
+      <section class="mt-8 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+        <article class="rounded-2xl border border-ink/10 bg-white p-6 sm:p-8">
+          <div class="mb-7 flex items-start justify-between gap-4">
+            <div>
+              <p class="text-sm font-semibold uppercase tracking-[0.16em] text-muted">Your information</p>
+              <h2 class="mt-2 font-display text-2xl font-extrabold">Personal details</h2>
+            </div>
+            <button type="button" data-edit-profile class="rounded-full border border-ink/20 px-4 py-2 text-sm font-semibold transition hover:border-ink hover:bg-paper">
+              Edit profile
+            </button>
+          </div>
+          <div class="mb-8 flex items-center gap-4 rounded-xl bg-paper p-4">
+            <div class="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-lime font-display text-xl font-extrabold text-ink">
+              <span data-user-initials>ME</span>
+              <img data-user-avatar alt="" class="hidden h-full w-full object-cover" />
+            </div>
+            <div class="min-w-0">
+              <p data-user-card-name class="truncate font-display text-lg font-bold">Loading...</p>
+              <p data-user-card-email class="truncate text-sm text-muted">Loading...</p>
+            </div>
+          </div>
+          <dl class="grid gap-5 sm:grid-cols-2">
+            <div class="border-t border-ink/10 pt-4">
               <dt class="text-sm text-muted">Email</dt>
               <dd data-user-email class="mt-1 break-all font-medium">Loading...</dd>
             </div>
-            <div class="border-b border-ink/10 pb-4">
-              <dt class="text-sm text-muted">User ID</dt>
-              <dd data-user-id class="mt-1 break-all font-mono text-xs">Loading...</dd>
+            <div class="border-t border-ink/10 pt-4">
+              <dt class="text-sm text-muted">Phone</dt>
+              <dd data-user-phone class="mt-1 font-medium">Not provided</dd>
             </div>
-            <div>
-              <dt class="text-sm text-muted">Account created</dt>
-              <dd data-created-at class="mt-1 font-medium">Loading...</dd>
+            <div class="border-t border-ink/10 pt-4 sm:col-span-2">
+              <dt class="text-sm text-muted">Bio</dt>
+              <dd data-user-bio class="mt-1 whitespace-pre-wrap font-medium">Tell people about yourself.</dd>
             </div>
           </dl>
+          <form
+            data-profile-form
+            class="mt-8 hidden space-y-4 border-t border-ink/10 pt-6"
+          >
+            <div>
+              <label for="profile-name" class="mb-2 block text-sm font-medium"
+                >Name</label
+              >
+              <input
+                id="profile-name"
+                name="name"
+                type="text"
+                autocomplete="name"
+                required
+                class="w-full rounded-lg border border-muted/30 bg-white px-4 py-3 outline-none transition focus:border-ink"
+              />
+            </div>
+            <div>
+              <label for="profile-phone" class="mb-2 block text-sm font-medium"
+                >Phone</label
+              >
+              <input
+                id="profile-phone"
+                name="phone"
+                type="tel"
+                autocomplete="tel"
+                class="w-full rounded-lg border border-muted/30 bg-white px-4 py-3 outline-none transition focus:border-ink"
+              />
+            </div>
+            <div>
+              <label
+                for="profile-picture"
+                class="mb-2 block text-sm font-medium"
+                >Profile picture</label
+              >
+              <input
+                id="profile-picture"
+                name="picture"
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+                class="w-full rounded-lg border border-muted/30 bg-white px-4 py-3 text-sm outline-none transition focus:border-ink"
+              />
+              <div class="mt-3 flex items-center gap-3 rounded-xl bg-paper p-3">
+                <img data-profile-preview alt="Selected profile picture preview" class="hidden h-20 w-20 rounded-full object-cover" />
+                <p data-profile-preview-label class="text-sm text-muted">Choose a photo to preview it here.</p>
+              </div>
+            </div>
+            <div>
+              <label for="profile-bio" class="mb-2 block text-sm font-medium"
+                >Bio</label
+              >
+              <textarea
+                id="profile-bio"
+                name="bio"
+                rows="4"
+                class="w-full rounded-lg border border-muted/30 bg-white px-4 py-3 outline-none transition focus:border-ink"
+              ></textarea>
+            </div>
+            <div class="flex flex-wrap gap-3">
+              <button
+                type="submit"
+                class="rounded-full bg-ink px-5 py-3 text-sm font-semibold text-paper transition hover:bg-muted"
+              >
+                Save changes
+              </button>
+              <button
+                type="button"
+                data-cancel-profile
+                class="rounded-full border border-ink/20 px-5 py-3 text-sm font-semibold transition hover:border-ink"
+              >
+                Cancel
+              </button>
+            </div>
+            <p data-profile-message class="hidden text-sm font-medium"></p>
+          </form>
         </article>
 
-        <article class="rounded-2xl border border-dashed border-ink/25 bg-white p-6 sm:p-8">
-          <div class="flex flex-col justify-between gap-5 sm:flex-row sm:items-start">
+        <article class="rounded-2xl border border-ink/10 bg-white p-6 sm:p-8">
+          <div
+            class="flex flex-col justify-between gap-5 sm:flex-row sm:items-start"
+          >
             <div>
-              <p class="text-sm font-semibold uppercase tracking-[0.16em] text-muted">
+              <p
+                class="text-sm font-semibold uppercase tracking-[0.16em] text-muted"
+              >
                 Property management
               </p>
               <h2 class="mt-2 font-display text-2xl font-extrabold">
                 Your property listings
               </h2>
               <p class="mt-3 max-w-xl text-muted">
-                This space is ready for adding, editing, and managing your
-                property listings.
+                Keep your property activity in one focused place.
               </p>
             </div>
-            <button
-              type="button"
-              disabled
-              class="cursor-not-allowed rounded-full bg-lime px-5 py-3 text-sm font-semibold text-ink opacity-60"
-            >
-              Add property — coming soon
-            </button>
           </div>
-          <div class="mt-8 rounded-xl bg-paper p-6">
-            <p class="font-semibold">No properties yet</p>
-            <p class="mt-2 text-sm text-muted">
-              When the listing feature is enabled, your properties will show
-              here with photos, prices, locations, and availability.
+          <div data-listings class="mt-8 hidden space-y-3"></div>
+          <div data-listings-empty class="mt-8 rounded-xl bg-paper p-6 sm:p-8">
+            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-white text-xl">⌂</div>
+            <p class="mt-5 font-display text-xl font-bold">No properties yet</p>
+            <p class="mt-2 max-w-sm text-sm leading-6 text-muted">
+              Add a property to start building your portfolio. Your photos,
+              prices, locations, and availability will appear here.
             </p>
+            <a href="add-listing/" class="mt-6 inline-flex rounded-full bg-ink px-5 py-3 text-sm font-semibold text-paper transition hover:bg-muted">
+              Create your first listing
+            </a>
           </div>
         </article>
       </section>
 
-      <p data-dashboard-error class="mt-8 hidden text-sm font-medium text-red-700"></p>
+      <p
+        data-dashboard-error
+        class="mt-8 hidden text-sm font-medium text-red-700"
+      ></p>
     </main>
   </body>
 </html>
