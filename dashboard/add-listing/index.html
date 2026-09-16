@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Create a property listing on your Meng-Yen dashboard"
+    />
+    <title>Add property — Meng-Yen</title>
+    <link rel="stylesheet" href="../../css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" crossorigin src="/assets/addListing-D7u-14wp.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/navbar-DaxuI7kr.js">
+    <link rel="stylesheet" crossorigin href="/assets/addListing-eBN3NXEe.css">
+  </head>
+  <body class="min-h-screen bg-paper text-ink antialiased">
+    <div data-navbar></div>
+    <main class="mx-auto max-w-7xl px-6 pb-20 pt-8 lg:px-10 lg:pt-12">
+      <a
+        href="../"
+        class="text-sm font-semibold text-muted transition hover:text-ink"
+        >&larr; Back to dashboard</a
+      >
+      <section
+        class="mt-8 overflow-hidden rounded-[2rem] bg-ink px-6 py-9 text-paper sm:px-10 sm:py-12"
+      >
+        <p class="text-sm font-semibold uppercase tracking-[0.2em] text-lime">
+          Property management
+        </p>
+        <h1
+          class="mt-4 max-w-2xl font-display text-4xl font-extrabold tracking-tight sm:text-5xl"
+        >
+          Bring a new property to life.
+        </h1>
+        <p class="mt-4 max-w-xl text-paper/70">
+          Add complete property details, format your description, and save it
+          directly to your property database.
+        </p>
+      </section>
+
+      <form data-listing-form class="mt-6 grid gap-6 lg:grid-cols-[1fr_0.42fr]">
+        <div
+          class="space-y-8 rounded-2xl border border-ink/10 bg-white p-6 sm:p-8"
+        >
+          <section>
+            <p
+              class="text-sm font-semibold uppercase tracking-[0.16em] text-muted"
+            >
+              01 / Essentials
+            </p>
+            <h2 class="mt-2 font-display text-2xl font-extrabold">
+              Tell us about the property
+            </h2>
+            <div class="mt-6 space-y-5">
+              <div class="pb-1">
+                <label
+                  for="listing-title"
+                  class="mb-2 block text-sm font-medium"
+                  >Property title</label
+                >
+                <input
+                  id="listing-title"
+                  name="title"
+                  type="text"
+                  required
+                  placeholder="e.g. Bright two-bedroom apartment"
+                  class="w-full rounded-lg border border-muted/30 bg-white px-4 py-3 outline-none transition focus:border-ink"
+                />
+              </div>
+              <div class="grid gap-5 sm:grid-cols-2">
+                <label class="text-sm font-medium"
+                  >Listing type
+                  <select
+                    name="listing_type"
+                    required
+                    class="mt-2 w-full rounded-lg border border-muted/30 bg-white px-4 py-3 outline-none focus:border-ink"
+                  >
+                    <option value="">Select a type</option>
+                    <option value="sale">For sale</option>
+                    <option value="rent">For rent</option>
+                  </select>
+                </label>
+                <label class="text-sm font-medium"
+                  >Price
+                  <input
+                    name="price"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    required
+                    placeholder="0.00"
+                    class="mt-2 w-full rounded-lg border border-muted/30 bg-white px-4 py-3 outline-none focus:border-ink"
+                  />
+                </label>
+                <label class="text-sm font-medium"
+                  >Price type
+                  <select
+                    name="price_type"
+                    required
+                    class="mt-2 w-full rounded-lg border border-muted/30 bg-white px-4 py-3 outline-none focus:border-ink"
+                  >
+                    <option value="">Select pricing</option>
+                    <option value="per sqft">Per sqft</option>
+                    <option value="per sqm">Per sqm</option>
+                    <option value="per acres">Per acres</option>
+                    <option value="per hectare">Per hectare</option>
+                    <option value="total">Total price</option>
+                  </select>
+                </label>
+                <label class="text-sm font-medium"
+                  >Tenure
+                  <select
+                    name="tenure"
+                    class="mt-2 w-full rounded-lg border border-muted/30 bg-white px-4 py-3 outline-none focus:border-ink"
+                  >
+                    <option value="">Select tenure</option>
+                    <option value="freehold">Freehold</option>
+                    <option value="leasehold">Leasehold</option>
+                  </select>
+                </label>
+              </div>
+              <div class="grid gap-5 sm:grid-cols-2">
+                <label class="text-sm font-medium sm:col-span-2">Property category
+                  <select name="category_id" required class="mt-2 w-full rounded-lg border border-muted/30 bg-white px-4 py-3 outline-none focus:border-ink">
+                    <option value="">Loading categories...</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <section class="border-t border-ink/10 pt-8">
+            <p
+              class="text-sm font-semibold uppercase tracking-[0.16em] text-muted"
+            >
+              02 / Location
+            </p>
+            <h2 class="mt-2 font-display text-2xl font-extrabold">
+              Where is it?
+            </h2>
+            <div class="mt-6 grid gap-5 sm:grid-cols-2">
+              <label class="text-sm font-medium sm:col-span-2"
+                >Address
+                <input
+                  name="address"
+                  type="text"
+                  required
+                  placeholder="Street address"
+                  class="mt-2 w-full rounded-lg border border-muted/30 px-4 py-3 outline-none focus:border-ink"
+                />
+              </label>
+              <label class="text-sm font-medium"
+                >City
+                <select
+                  name="city_id"
+                  data-city-select
+                  required
+                  class="mt-2 w-full rounded-lg border border-muted/30 bg-white px-4 py-3 outline-none focus:border-ink"
+                >
+                  <option value="">Loading cities...</option>
+                </select>
+              </label>
+              <label data-custom-city-field class="hidden text-sm font-medium"
+                >Other city
+                <input
+                  name="other_city"
+                  type="text"
+                  placeholder="Enter the city name"
+                  class="mt-2 w-full rounded-lg border border-muted/30 bg-white px-4 py-3 outline-none focus:border-ink"
+                />
+              </label>
+              <label class="text-sm font-medium"
+                >State
+                <input
+                  name="state"
+                  type="text"
+                  value="Johor"
+                  readonly
+                  class="mt-2 w-full rounded-lg border border-muted/30 bg-paper px-4 py-3 text-muted outline-none"
+                />
+              </label>
+              <label class="text-sm font-medium"
+                >Area / neighbourhood
+                <input
+                  name="area"
+                  type="text"
+                  placeholder="e.g. Bukit Bintang"
+                  class="mt-2 w-full rounded-lg border border-muted/30 px-4 py-3 outline-none focus:border-ink"
+                />
+              </label>
+              <label class="text-sm font-medium"
+                >Postcode
+                <input
+                  name="postcode"
+                  type="text"
+                  placeholder="e.g. 55100"
+                  class="mt-2 w-full rounded-lg border border-muted/30 px-4 py-3 outline-none focus:border-ink"
+                />
+              </label>
+              <label class="text-sm font-medium"
+                >Direction
+                <select
+                  name="direction"
+                  class="mt-2 w-full rounded-lg border border-muted/30 px-4 py-3 outline-none focus:border-ink"
+                >
+                  <option value="">Select direction</option>
+                  <option value="north">North</option>
+                  <option value="south">South</option>
+                  <option value="east">East</option>
+                  <option value="west">West</option>
+                  <option value="north_east">North-east</option>
+                  <option value="north_west">North-west</option>
+                  <option value="south_east">South-east</option>
+                  <option value="south_west">South-west</option>
+                </select>
+              </label>
+              <label class="text-sm font-medium"
+                >Bumi status
+                <select
+                  name="bumi_status"
+                  class="mt-2 w-full rounded-lg border border-muted/30 px-4 py-3 outline-none focus:border-ink"
+                >
+                  <option value="">Select status</option>
+                  <option value="bumiputera">Bumiputera</option>
+                  <option value="non_bumiputera">Non-bumiputera</option>
+                  <option value="international">International</option>
+                </select>
+              </label>
+            </div>
+          </section>
+
+          <section class="border-t border-ink/10 pt-8">
+            <p
+              class="text-sm font-semibold uppercase tracking-[0.16em] text-muted"
+            >
+              03 / Description
+            </p>
+            <h2 class="mt-2 font-display text-2xl font-extrabold">
+              Make the details clear
+            </h2>
+            <div class="mt-6">
+              <div data-description-editor class="listing-editor"></div>
+              <p class="mt-2 text-xs text-muted">
+                Use the table button to add structured specifications directly
+                into your description.
+              </p>
+            </div>
+          </section>
+        </div>
+
+        <aside class="h-fit space-y-6">
+          <section class="rounded-2xl border border-ink/10 bg-white p-6">
+            <p
+              class="text-sm font-semibold uppercase tracking-[0.16em] text-muted"
+            >
+              04 / Property facts
+            </p>
+            <h2 class="mt-2 font-display text-xl font-extrabold">
+              Add useful context
+            </h2>
+            <div class="mt-5 grid grid-cols-2 gap-4">
+              <label class="text-sm text-muted"
+                >Bedrooms<input
+                  name="bedrooms"
+                  type="number"
+                  min="0"
+                  class="mt-2 w-full rounded-lg border border-muted/30 px-3 py-2.5 text-ink outline-none focus:border-ink"
+              /></label>
+              <label class="text-sm text-muted"
+                >Bathrooms<input
+                  name="bathrooms"
+                  type="number"
+                  min="0"
+                  class="mt-2 w-full rounded-lg border border-muted/30 px-3 py-2.5 text-ink outline-none focus:border-ink"
+              /></label>
+              <label class="text-sm text-muted"
+                >Car parks<input
+                  name="car_parks"
+                  type="number"
+                  min="0"
+                  class="mt-2 w-full rounded-lg border border-muted/30 px-3 py-2.5 text-ink outline-none focus:border-ink"
+              /></label>
+              <label class="text-sm text-muted"
+                >Floors<input
+                  name="floors"
+                  type="text"
+                  class="mt-2 w-full rounded-lg border border-muted/30 px-3 py-2.5 text-ink outline-none focus:border-ink"
+              /></label>
+              <label class="text-sm text-muted"
+                >Year built<input
+                  name="year_built"
+                  type="number"
+                  min="0"
+                  class="mt-2 w-full rounded-lg border border-muted/30 px-3 py-2.5 text-ink outline-none focus:border-ink"
+              /></label>
+              <label class="text-sm text-muted"
+                >Expiry year<input
+                  name="expiry_year"
+                  type="number"
+                  min="0"
+                  class="mt-2 w-full rounded-lg border border-muted/30 px-3 py-2.5 text-ink outline-none focus:border-ink"
+              /></label>
+              <label class="text-sm text-muted"
+                >Ceiling height<input
+                  name="ceiling_height"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  class="mt-2 w-full rounded-lg border border-muted/30 px-3 py-2.5 text-ink outline-none focus:border-ink"
+              /></label>
+              <label class="text-sm text-muted"
+                >Floor loading<input
+                  name="floor_loading"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  class="mt-2 w-full rounded-lg border border-muted/30 px-3 py-2.5 text-ink outline-none focus:border-ink"
+              /></label>
+              <label class="text-sm text-muted sm:col-span-2"
+                >Power supply<input
+                  name="power_supply"
+                  type="text"
+                  placeholder="e.g. 3-phase, 100 amps"
+                  class="mt-2 w-full rounded-lg border border-muted/30 px-3 py-2.5 text-ink outline-none focus:border-ink"
+              /></label>
+              <label class="text-sm text-muted sm:col-span-2"
+                >Maintenance fee<input
+                  name="maintenance_fee"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  class="mt-2 w-full rounded-lg border border-muted/30 px-3 py-2.5 text-ink outline-none focus:border-ink"
+              /></label>
+            </div>
+          </section>
+
+          <section class="rounded-2xl border border-ink/10 bg-white p-6">
+            <p
+              class="text-sm font-semibold uppercase tracking-[0.16em] text-muted"
+            >
+              05 / Size & finish
+            </p>
+            <div class="mt-5 space-y-4">
+              <label class="block text-sm text-muted"
+                >Built-up size
+                <span class="mt-2 flex gap-2"
+                  ><input
+                    name="built_up_size"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    class="min-w-0 flex-1 rounded-lg border border-muted/30 px-3 py-2.5 text-ink outline-none focus:border-ink"
+                  /><select
+                    name="built_up_unit"
+                    class="rounded-lg border border-muted/30 px-2 py-2.5 text-ink outline-none focus:border-ink"
+                  >
+                    <option value="">Unit</option>
+                    <option value="sqft">sqft</option>
+                    <option value="sqm">sqm</option>
+                    <option value="acres">acres</option>
+                    <option value="hectare">hectare</option>
+                  </select></span
+                >
+              </label>
+              <label class="block text-sm text-muted"
+                >Land size
+                <span class="mt-2 flex gap-2"
+                  ><input
+                    name="land_size"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    class="min-w-0 flex-1 rounded-lg border border-muted/30 px-3 py-2.5 text-ink outline-none focus:border-ink"
+                  /><select
+                    name="land_unit"
+                    class="rounded-lg border border-muted/30 px-2 py-2.5 text-ink outline-none focus:border-ink"
+                  >
+                    <option value="">Unit</option>
+                    <option value="sqft">sqft</option>
+                    <option value="sqm">sqm</option>
+                    <option value="acres">acres</option>
+                    <option value="hectare">hectare</option>
+                  </select></span
+                >
+              </label>
+              <label class="block text-sm text-muted"
+                >Furnishing
+                <select
+                  name="furnishing"
+                  class="mt-2 w-full rounded-lg border border-muted/30 px-3 py-2.5 text-ink outline-none focus:border-ink"
+                >
+                  <option value="">Select furnishing</option>
+                  <option value="fully_furnished">Fully furnished</option>
+                  <option value="partially_furnished">
+                    Partially furnished
+                  </option>
+                  <option value="unfurnished">Unfurnished</option>
+                </select>
+              </label>
+            </div>
+          </section>
+
+          <section class="rounded-2xl border border-ink/10 bg-white p-6">
+            <p
+              class="text-sm font-semibold uppercase tracking-[0.16em] text-muted"
+            >
+              06 / Publish
+            </p>
+            <label
+              for="listing-image"
+              class="mt-4 mb-2 block text-sm font-medium"
+              >Property photos</label
+            >
+            <input
+              id="listing-image"
+              name="image"
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+              multiple
+              class="w-full rounded-lg border border-muted/30 bg-white px-3 py-3 text-sm outline-none focus:border-ink"
+            />
+            <p class="mt-2 text-xs leading-5 text-muted">
+              Optional. Drag the previews to choose their display order.
+            </p>
+            <div data-image-preview class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3"></div>
+            <button
+              type="submit"
+              class="mt-6 w-full rounded-full bg-ink px-6 py-3 font-semibold text-paper transition hover:bg-muted"
+            >
+              Save listing
+            </button>
+            <p data-listing-message class="mt-4 hidden text-sm font-medium"></p>
+          </section>
+        </aside>
+      </form>
+    </main>
+  </body>
+</html>
