@@ -7,7 +7,11 @@ if (navbarTargets.length === 0) {
   throw new Error("Navbar mount point not found.");
 }
 
-const pathSegments = window.location.pathname.split("/").filter(Boolean);
+const basePath = new URL(import.meta.env.BASE_URL, window.location.origin).pathname;
+const relativePath = window.location.pathname.startsWith(basePath)
+  ? window.location.pathname.slice(basePath.length)
+  : window.location.pathname;
+const pathSegments = relativePath.split("/").filter(Boolean);
 const currentFile = pathSegments.at(-1);
 if (currentFile === "index.html" || currentFile === "index.php") {
   pathSegments.pop();
