@@ -6,6 +6,8 @@
     "dev": "npm run build:css && vite",
     "build": "npm run build:css && vite build",
     "build:css": "tailwindcss -i ./src/css/input.css -o ./public/css/styles.css --minify",
+    "watch:css": "tailwindcss -i ./src/css/input.css -o ./public/css/styles.css --watch",
+    "watch:js": "vite build --watch",
     "preview": "vite preview",
     "deploy": "npm run build && gh-pages -d dist"
   },
@@ -28,7 +30,6 @@
     "vite": "^8.2.2"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.116.0",
     "quill": "^2.0.3",
     "quill-table-better": "^1.2.3"
   },

@@ -1,4 +1,4 @@
-import { supabase } from "./supabase.js";
+import { api } from "./api.js";
 
 const userName = document.querySelector("[data-user-name]");
 const userCardName = document.querySelector("[data-user-card-name]");
@@ -73,85 +73,26 @@ const getProfile = async (user) => {
     bio: user.user_metadata?.bio || "",
     avatar_url: user.user_metadata?.avatar_url || "",
   };
-  const { data, error } = await supabase
-    .from("profiles")
-    .select("name, email, phone, bio, avatar_url")
-    .eq("id", user.id)
-    .maybeSingle();
-
-  if (error) {
-    console.error("Unable to load profile from database:", error);
-    return {
-      profile: metadataProfile,
-      warning: `Profile database sync is unavailable: ${error.message}`,
-    };
-  }
-
-  if (data) {
+  try {
+    const { profile } = await api.profile();
     return {
       profile: {
-        full_name: data.name || "",
-        email: data.email || user.email || "",
-        phone: data.phone || "",
-        bio: data.bio || "",
-        avatar_url: data.avatar_url || "",
+        full_name: profile.name || "",
+        email: profile.email || user.email || "",
+        phone: profile.phone || "",
+        bio: profile.bio || "",
+        avatar_url: profile.avatar_url || "",
       },
     };
+  } catch (error) {
+    console.error("Unable to load profile from database:", error);
+    return { profile: metadataProfile, warning: `Profile database sync is unavailable: ${error.message}` };
   }
-
-  const { error: insertError } = await supabase
-    .from("profiles")
-    .insert({
-      id: user.id,
-      email: user.email || "",
-      name: metadataProfile.full_name,
-      phone: metadataProfile.phone,
-      bio: metadataProfile.bio,
-      avatar_url: metadataProfile.avatar_url,
-    });
-
-  if (insertError) {
-    console.error("Unable to create profile in database:", insertError);
-    return {
-      profile: metadataProfile,
-      warning: `Profile database sync is unavailable: ${insertError.message}`,
-    };
-  }
-
-  return { profile: metadataProfile };
 };
 
 const saveProfile = async (user, profile) => {
-  const { error: profileError } = await supabase
-    .from("profiles")
-    .upsert(
-      {
-        id: user.id,
-        email: user.email || "",
-        name: profile.full_name,
-        phone: profile.phone,
-        bio: profile.bio,
-        avatar_url: profile.avatar_url,
-      },
-      { onConflict: "id" },
-    );
-
-  if (profileError) {
-    throw new Error(`Unable to save profile to database: ${profileError.message}`);
-  }
-
-  const { data, error: authError } = await supabase.auth.updateUser({
-    data: {
-      ...user.user_metadata,
-      ...profile,
-    },
-  });
-
-  if (authError) {
-    throw new Error(`Profile database saved, but Auth metadata failed: ${authError.message}`);
-  }
-
-  return data.user;
+  const { user: updatedUser } = await api.saveProfile(profile);
+  return updatedUser;
 };
 
 const showError = (message) => {
@@ -190,14 +131,12 @@ const renderListings = (properties) => {
 };
 
 const loadDashboard = async () => {
-  const { data, error } = await supabase.auth.getUser();
-
-  if (error || !data.user) {
-    window.location.href = "../index.html";
+  const { user } = await api.session();
+  if (!user) {
+    window.location.href = "../index.php";
     return;
   }
 
-  const user = data.user;
   const { profile, warning } = await getProfile(user);
   if (warning) {
     showError(warning);
@@ -214,22 +153,9 @@ const loadDashboard = async () => {
   profileForm.elements.name.value = profile.full_name;
   profileForm.elements.phone.value = profile.phone;
   profileForm.elements.bio.value = profile.bio;
-  const { count, error: listingsError } = await supabase
-    .from("properties")
-    .select("id", { count: "exact", head: true });
-  if (listingsError) {
-    throw new Error(`Unable to load properties: ${listingsError.message}`);
-  }
+  const { count, properties } = await api.properties();
   listingCount.textContent = count ?? 0;
-  const { data: propertyRows, error: propertiesError } = await supabase
-    .from("properties")
-    .select("id, title, address, listing_type, price")
-    .order("created_at", { ascending: false })
-    .limit(5);
-  if (propertiesError) {
-    throw new Error(`Unable to load property listings: ${propertiesError.message}`);
-  }
-  renderListings(propertyRows || []);
+  renderListings(properties || []);
   setAvatar(profile.avatar_url, displayName);
   setFormPreview(profile.avatar_url, displayName);
 };
@@ -310,15 +236,15 @@ profileForm.addEventListener("submit", async (event) => {
 
 logoutButton.addEventListener("click", async () => {
   logoutButton.disabled = true;
-  const { error } = await supabase.auth.signOut();
-
-  if (error) {
+  try {
+    await api.logout();
+  } catch {
     logoutButton.disabled = false;
     showError("Unable to log out. Please try again.");
     return;
   }
 
-  window.location.href = "../index.html";
+  window.location.href = "../index.php";
 });
 
 loadDashboard().catch((error) => {

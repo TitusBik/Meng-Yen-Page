@@ -1,5 +1,5 @@
 import navbarMarkup from "./components/navbar.html?raw";
-import { supabase } from "./supabase.js";
+import { api } from "./api.js";
 
 const navbarTargets = document.querySelectorAll("[data-navbar]");
 
@@ -7,21 +7,22 @@ if (navbarTargets.length === 0) {
   throw new Error("Navbar mount point not found.");
 }
 
-const basePath = new URL(import.meta.env.BASE_URL, window.location.origin).pathname;
-const relativePath = window.location.pathname.startsWith(basePath)
-  ? window.location.pathname.slice(basePath.length)
-  : window.location.pathname;
-const pathSegments = relativePath.split("/").filter(Boolean);
-const currentFile = pathSegments.at(-1);
-if (currentFile === "index.html" || currentFile === "index.php") {
+const projectMarker = "/Meng-Yen-Page/";
+const projectRoot = window.location.pathname.includes(projectMarker)
+  ? projectMarker
+  : new URL(import.meta.env.BASE_URL, window.location.origin).pathname;
+const pagePath = window.location.pathname.split(projectRoot)[1] || "";
+const pathSegments = pagePath.split("/").filter(Boolean);
+if (pathSegments.at(-1)?.endsWith(".php")) {
   pathSegments.pop();
 }
-const siteRoot = "../".repeat(pathSegments.length);
+const siteRoot = projectRoot;
 const isDashboard = pathSegments.at(-1) === "dashboard";
 
 navbarTargets.forEach((target) => {
   target.innerHTML = navbarMarkup;
 
+  const logo = target.querySelector("[data-navbar-logo]");
   const homeLinks = target.querySelectorAll("[data-navbar-home]");
   const commercialLink = target.querySelector("[data-navbar-commercial]");
   const residentialLink = target.querySelector("[data-navbar-residential]");
@@ -29,14 +30,15 @@ navbarTargets.forEach((target) => {
   const aboutLink = target.querySelector("[data-navbar-about]");
   const contactLink = target.querySelector("[data-navbar-contact]");
 
+  logo.src = `${siteRoot}assets/image/Company%20Logo.jpg`;
   homeLinks.forEach((homeLink) => {
-    homeLink.href = `${siteRoot}index.html`;
+    homeLink.href = `${siteRoot}index.php`;
   });
-  commercialLink.href = `${siteRoot}commercial/index.html`;
-  residentialLink.href = `${siteRoot}residential/index.html`;
-  newLaunchLink.href = `${siteRoot}new_launch_project/index.html`;
-  aboutLink.href = `${siteRoot}about/index.html`;
-  contactLink.href = `${siteRoot}contact/index.html`;
+  commercialLink.href = `${siteRoot}commercial/index.php`;
+  residentialLink.href = `${siteRoot}residential/index.php`;
+  newLaunchLink.href = `${siteRoot}new_launch_project/index.php`;
+  aboutLink.href = `${siteRoot}about/index.php`;
+  contactLink.href = `${siteRoot}contact/index.php`;
 
   const loginDialog = target.querySelector("[data-login-dialog]");
   const loginOpenButton = target.querySelector("[data-login-open]");
@@ -126,12 +128,9 @@ navbarTargets.forEach((target) => {
     submitButton.disabled = true;
     submitButton.textContent = "Logging in...";
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
+    try {
+      await api.login(email, password);
+    } catch {
       alert("Invalid username or password.");
       submitButton.disabled = false;
       submitButton.textContent = "Login";
@@ -141,11 +140,5 @@ navbarTargets.forEach((target) => {
     window.location.href = `${siteRoot}dashboard/`;
   });
 
-  supabase.auth.getSession().then(({ data }) => {
-    setAuthenticatedAction(data.session?.user ?? null);
-  });
-
-  supabase.auth.onAuthStateChange((_event, session) => {
-    setAuthenticatedAction(session?.user ?? null);
-  });
+  api.session().then(({ user }) => setAuthenticatedAction(user)).catch(() => setAuthenticatedAction(null));
 });

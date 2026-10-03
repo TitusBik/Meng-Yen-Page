@@ -2,7 +2,7 @@ import Quill from "quill";
 import QuillBetterTable from "quill-table-better";
 import "quill/dist/quill.snow.css";
 import "quill-table-better/dist/quill-table-better.css";
-import { supabase } from "./supabase.js";
+import { api } from "./api.js";
 
 const form = document.querySelector("[data-listing-form]");
 const message = document.querySelector("[data-listing-message]");
@@ -13,7 +13,7 @@ const customCityInput = form.elements.other_city;
 const imageInput = form.elements.image;
 const imagePreview = document.querySelector("[data-image-preview]");
 let imageItems = [];
-Quill.register({ "modules/better-table": QuillBetterTable }, true);
+Quill.register({ "modules/table-better": QuillBetterTable }, true);
 const editor = new Quill("[data-description-editor]", {
   theme: "snow",
   placeholder: "Describe the property, features, access, and availability.",
@@ -23,15 +23,17 @@ const editor = new Quill("[data-description-editor]", {
       ["bold", "italic", "underline", "strike"],
       [{ list: "ordered" }, { list: "bullet" }],
       [{ align: [] }, { color: [] }, { background: [] }],
-      ["link", "blockquote", "image", "clean"],
+      ["link", "video", "blockquote", "image", "clean"],
       ["table-better"],
     ],
-    "better-table": {
+    table: false,
+    "table-better": {
       operationMenu: {
         items: {
           unmergeCells: { text: "Unmerge cells" },
         },
       },
+      toolbarTable: true,
     },
     keyboard: {
       bindings: QuillBetterTable.keyboardBindings,
@@ -50,23 +52,6 @@ const toTextOrNull = (value) => (value === "" ? null : value);
 
 const slugify = (value) =>
   value.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-
-const readImages = async (files) =>
-  Promise.all(
-    [...files].map(
-      (file) =>
-        new Promise((resolve, reject) => {
-          if (file.size > 3 * 1024 * 1024) {
-            reject(new Error("Each image must be smaller than 3 MB."));
-            return;
-          }
-          const reader = new FileReader();
-          reader.onload = () => resolve({ name: file.name, type: file.type, data: reader.result });
-          reader.onerror = () => reject(new Error(`Unable to read ${file.name}.`));
-          reader.readAsDataURL(file);
-        }),
-    ),
-  );
 
 const renderImagePreview = () => {
   imagePreview.replaceChildren();
@@ -115,12 +100,12 @@ const renderImagePreview = () => {
 };
 
 const checkSession = async () => {
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data.user) {
-    window.location.href = "../../index.html";
+  const { user } = await api.session();
+  if (!user) {
+    window.location.href = "../../index.php";
     return null;
   }
-  return data.user;
+  return user;
 };
 
 const propertyFields = [
@@ -140,20 +125,11 @@ const populateSelect = (select, rows, placeholder) => {
 };
 
 const loadReferenceData = async () => {
-  const [categoriesResponse, citiesResponse] = await Promise.all([
-    supabase.from("property_categories").select("id, name").order("name"),
-    supabase.from("cities").select("id, name, state").order("name"),
-  ]);
-  if (categoriesResponse.error) {
-    throw new Error(`Unable to load property categories: ${categoriesResponse.error.message}`);
-  }
-  if (citiesResponse.error) {
-    throw new Error(`Unable to load cities: ${citiesResponse.error.message}`);
-  }
-  populateSelect(form.elements.category_id, categoriesResponse.data || [], "Select a category");
+  const { categories, cities } = await api.reference();
+  populateSelect(form.elements.category_id, categories || [], "Select a category");
   populateSelect(
     form.elements.city_id,
-    citiesResponse.data || [],
+    cities || [],
     "Select a city",
   );
 };
@@ -174,12 +150,8 @@ citySelect.addEventListener("change", updateCustomCityVisibility);
 
 const loadProperty = async () => {
   if (!editId) return;
-  const { data, error } = await supabase
-    .from("properties")
-    .select([...propertyFields, "description", "media"].join(", "))
-    .eq("id", editId)
-    .single();
-  if (error) throw new Error(`Unable to load listing: ${error.message}`);
+  const { property: data } = await api.property(editId);
+  if (!data) throw new Error("Unable to load listing.");
   propertyFields.forEach((field) => {
     if (data[field] !== null && data[field] !== undefined && form.elements[field]) {
       form.elements[field].value = data[field];
@@ -189,10 +161,12 @@ const loadProperty = async () => {
     editor.clipboard.dangerouslyPasteHTML(data.description);
   }
   imageItems = Array.isArray(data.media)
-    ? data.media.map((item) => ({
-        preview: typeof item === "string" ? item : item.data,
-        existing: item,
-      })).filter((item) => item.preview)
+    ? data.media.map((item) => {
+        const path = typeof item === "string" ? item : item?.path || item?.url;
+        return path
+          ? { preview: path.startsWith("/") ? path : `../../${path}`, existing: path }
+          : null;
+      }).filter(Boolean)
     : [];
   renderImagePreview();
   updateCustomCityVisibility();
@@ -210,7 +184,9 @@ form.addEventListener("submit", async (event) => {
     if (!user) return;
     const values = Object.fromEntries(new FormData(form));
     const newImageItems = imageItems.filter((item) => item.file);
-    const newImages = await readImages(newImageItems.map((item) => item.file));
+    const existingMedia = imageItems
+      .filter((item) => !item.file && item.existing)
+      .map((item) => item.existing);
     const title = values.title.trim();
     const timestamp = Date.now().toString(36);
     const cityId = Number(values.city_id);
@@ -254,30 +230,26 @@ form.addEventListener("submit", async (event) => {
       postcode: toTextOrNull(values.postcode.trim()),
       is_published: false,
     };
-    newImages.forEach((image, index) => {
-      const item = newImageItems[index];
-      item.existing = image;
-    });
-    const media = imageItems
-      .map((item) => item.existing)
-      .filter(Boolean);
-    property.media = media.length > 0 ? media : null;
+    property.media = existingMedia.length > 0 ? existingMedia : null;
     let response;
     if (editId) {
-      response = await supabase
-        .from("properties")
-        .update(property)
-        .eq("id", editId);
+      response = await api.saveProperty({ ...property, id: editId });
     } else {
-      response = await supabase.from("properties").insert({
+      response = await api.saveProperty({
         property_code: `MY-${timestamp.toUpperCase()}`,
         slug: `${slugify(title)}-${timestamp}`,
         ...property,
-        media: images.length > 0 ? images : null,
+        media: property.media,
       });
     }
-
-    if (response.error) throw new Error(response.error.message);
+    if (newImageItems.length > 0) {
+      const { paths } = await api.uploadImages(response.id, newImageItems.map((item) => item.file));
+      await api.saveProperty({
+        ...property,
+        id: response.id,
+        media: [...existingMedia, ...paths],
+      });
+    }
     if (!editId) {
       form.reset();
       editor.setContents([]);

@@ -5,15 +5,22 @@ module.exports = defineConfig({
   base: process.env.NODE_ENV === "production" ? "/Meng-Yen-Page/" : "/",
   build: {
     rollupOptions: {
+      output: {
+        entryFileNames: "assets/[name].js",
+        assetFileNames: ({ name }) =>
+          name?.endsWith(".css") ? "assets/[name][extname]" : "assets/[name]-[hash][extname]",
+      },
       input: {
-        main: resolve(__dirname, "index.html"),
-        commercial: resolve(__dirname, "commercial/index.html"),
-        residential: resolve(__dirname, "residential/index.html"),
-        newLaunchProject: resolve(__dirname, "new_launch_project/index.html"),
-        about: resolve(__dirname, "about/index.html"),
-        contact: resolve(__dirname, "contact/index.html"),
-        dashboard: resolve(__dirname, "dashboard/index.html"),
-        addListing: resolve(__dirname, "dashboard/add-listing/index.html"),
+      footer: resolve(__dirname, "src/css/footer.js"),
+      navbar: resolve(__dirname, "src/css/navbar.js"),
+        dashboard: resolve(__dirname, "src/css/dashboard.js"),
+        listing: resolve(__dirname, "src/css/listing.js"),
+        commercial: resolve(__dirname, "src/css/commercial.js"),
+        commercialDetail: resolve(__dirname, "src/css/commercial-detail.js"),
+        propertyListings: resolve(__dirname, "src/css/property-listings.js"),
+        propertyDetail: resolve(__dirname, "src/css/property-detail.js"),
+        homepage: resolve(__dirname, "src/css/homepage.js"),
+        awards: resolve(__dirname, "src/css/awards.js"),
       },
     },
   },
