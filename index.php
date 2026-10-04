@@ -81,7 +81,24 @@
     </section>
 
     <section class="featured-listing">
-      // Show 6 featured listing
+      <div class="mx-auto max-w-7xl px-6 py-16 lg:px-10">
+        <div class="flex items-end justify-between gap-4">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.16em] text-muted">Featured properties</p>
+            <h2 class="mt-2 font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
+              Find your next property
+            </h2>
+          </div>
+          <button
+            type="button"
+            data-featured-next
+            class="hidden shrink-0 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-paper transition hover:bg-muted">
+            Next
+          </button>
+        </div>
+        <p data-featured-message class="mt-6 text-muted">Loading featured listings...</p>
+        <div data-featured-listings class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4"></div>
+      </div>
     </section>
 
     <section class="award-banner" aria-labelledby="award-banner-title" style="--award-banner-image: url('/Meng-Yen-Page/assets/image/Single Banner.jpg')">

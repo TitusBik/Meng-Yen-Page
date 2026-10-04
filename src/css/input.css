@@ -120,6 +120,7 @@ body {
   inset: 0 0 auto;
   z-index: 40;
   background: #ffffff;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-ink) 10%, transparent);
 }
 
 ::selection {
@@ -194,14 +195,10 @@ body {
 
 .about-eyebrow {
   margin-bottom: 0.75rem;
-  color: var(--color-muted);
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
 }
 
 .about-intro h1,
+.about-eyebrow,
 .section-heading h2,
 .why-me-content h2 {
   font-family: var(--font-display);
@@ -237,6 +234,7 @@ body {
   text-align: center;
 }
 
+.about-eyebrow,
 .section-heading h2,
 .why-me-content h2 {
   font-size: clamp(2rem, 5vw, 3.5rem);
@@ -343,7 +341,9 @@ body {
   color: var(--color-muted);
   font-size: 0.875rem;
   font-weight: 700;
-  transition: color 150ms ease, border-color 150ms ease;
+  transition:
+    color 150ms ease,
+    border-color 150ms ease;
 }
 
 .detail-tab:hover,
@@ -849,15 +849,15 @@ body {
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
-    black 5%,
-    black 95%,
+    black 1%,
+    black 99%,
     transparent 100%
   );
   mask-image: linear-gradient(
     to right,
     transparent 0%,
-    black 5%,
-    black 95%,
+    black 1%,
+    black 99%,
     transparent 100%
   );
 }

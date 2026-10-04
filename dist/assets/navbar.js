@@ -11,18 +11,40 @@ import{n as e,t}from"./rolldown-runtime-B0Z9INg1.js";import{n,t as r}from"./api-
     class="hidden items-center gap-8 text-sm font-medium text-muted md:flex"\r
     aria-label="Main navigation"\r
   >\r
-    <a class="transition hover:text-ink" href="#" data-navbar-home>Home</a>\r
-    <a class="transition hover:text-ink" href="#" data-navbar-commercial\r
+    <a\r
+      class="transition hover:text-ink pb-1 border-b-2 border-transparent"\r
+      href="#"\r
+      data-navbar-home\r
+      >Home</a\r
+    >\r
+    <a\r
+      class="transition hover:text-ink pb-1 border-b-2 border-transparent"\r
+      href="#"\r
+      data-navbar-commercial\r
       >Commercial</a\r
     >\r
-    <a class="transition hover:text-ink" href="#" data-navbar-residential\r
+    <a\r
+      class="transition hover:text-ink pb-1 border-b-2 border-transparent"\r
+      href="#"\r
+      data-navbar-residential\r
       >Residential</a\r
     >\r
-    <a class="transition hover:text-ink" href="#" data-navbar-new-launch-project\r
+    <a\r
+      class="transition hover:text-ink pb-1 border-b-2 border-transparent"\r
+      href="#"\r
+      data-navbar-new-launch-project\r
       >New Launch Project</a\r
     >\r
-    <a class="transition hover:text-ink" href="#" data-navbar-about>About Me</a>\r
-    <a class="transition hover:text-ink" href="#" data-navbar-contact\r
+    <a\r
+      class="transition hover:text-ink pb-1 border-b-2 border-transparent"\r
+      href="#"\r
+      data-navbar-about\r
+      >About Me</a\r
+    >\r
+    <a\r
+      class="transition hover:text-ink pb-1 border-b-2 border-transparent"\r
+      href="#"\r
+      data-navbar-contact\r
       >Contact Me</a\r
     >\r
   </nav>\r
@@ -95,4 +117,4 @@ import{n as e,t}from"./rolldown-runtime-B0Z9INg1.js";import{n,t as r}from"./api-
     </div>\r
   </div>\r
 </header>\r
-`})),o=t((()=>{a(),n();var e=document.querySelectorAll(`[data-navbar]`);if(e.length===0)throw Error(`Navbar mount point not found.`);var t=`/Meng-Yen-Page/`,o=window.location.pathname.includes(t)?t:new URL(`/Meng-Yen-Page/`,window.location.origin).pathname,s=(window.location.pathname.split(o)[1]||``).split(`/`).filter(Boolean);s.at(-1)?.endsWith(`.php`)&&s.pop();var c=o,l=s.at(-1)===`dashboard`;e.forEach(e=>{e.innerHTML=i;let t=e.querySelector(`[data-navbar-logo]`),n=e.querySelectorAll(`[data-navbar-home]`),a=e.querySelector(`[data-navbar-commercial]`),o=e.querySelector(`[data-navbar-residential]`),s=e.querySelector(`[data-navbar-new-launch-project]`),u=e.querySelector(`[data-navbar-about]`),d=e.querySelector(`[data-navbar-contact]`);t.src=`${c}assets/image/Company%20Logo.jpg`,n.forEach(e=>{e.href=`${c}index.php`}),a.href=`${c}commercial/index.php`,o.href=`${c}residential/index.php`,s.href=`${c}new_launch_project/index.php`,u.href=`${c}about/index.php`,d.href=`${c}contact/index.php`;let f=e.querySelector(`[data-login-dialog]`),p=e.querySelector(`[data-login-open]`),m=e.querySelector(`[data-login-close]`),h=e.querySelector(`[data-login-form]`),g=`login`,_=()=>{window.location.href=`${c}dashboard/`},v=()=>{f.classList.add(`hidden`),f.classList.remove(`flex`),f.setAttribute(`aria-hidden`,`true`),p.focus()},y=()=>{f.classList.remove(`hidden`),f.classList.add(`flex`),f.setAttribute(`aria-hidden`,`false`),f.querySelector(`input`).focus()};p.addEventListener(`click`,y);let b=e=>{let t=l&&e?`logout`:e?`dashboard`:`login`;if(g!==t){if(g=t,p.removeEventListener(`click`,_),p.removeEventListener(`click`,y),e&&!l){p.textContent=`Dashboard`,p.removeAttribute(`data-login-open`),p.removeAttribute(`aria-haspopup`),p.removeAttribute(`aria-controls`),p.addEventListener(`click`,_);return}if(l&&e){p.textContent=`Log out`,p.dataset.logout=``,p.removeAttribute(`data-login-open`),p.removeAttribute(`aria-haspopup`),p.removeAttribute(`aria-controls`);return}}};m.addEventListener(`click`,v),f.addEventListener(`click`,e=>{e.target===f&&v()}),document.addEventListener(`keydown`,e=>{e.key===`Escape`&&f.getAttribute(`aria-hidden`)===`false`&&v()}),h.addEventListener(`submit`,async e=>{e.preventDefault();let t=h.elements.email.value.trim(),n=h.elements.password.value,i=h.querySelector(`button[type='submit']`);if(t&&n){i.disabled=!0,i.textContent=`Logging in...`;try{await r.login(t,n)}catch{alert(`Invalid username or password.`),i.disabled=!1,i.textContent=`Login`;return}window.location.href=`${c}dashboard/`}}),r.session().then(({user:e})=>b(e)).catch(()=>b(null))})}));export default o();
+`})),o=t((()=>{a(),n();var e=document.querySelectorAll(`[data-navbar]`);if(e.length===0)throw Error(`Navbar mount point not found.`);var t=`/Meng-Yen-Page/`,o=window.location.pathname.includes(t)?t:new URL(`/Meng-Yen-Page/`,window.location.origin).pathname,s=(window.location.pathname.split(o)[1]||``).split(`/`).filter(Boolean);s.at(-1)?.endsWith(`.php`)&&s.pop();var c=o,l=s.at(-1)===`dashboard`;e.forEach(e=>{e.innerHTML=i;let t=e.querySelector(`[data-navbar-logo]`),n=e.querySelectorAll(`[data-navbar-home]`),a=e.querySelector(`[data-navbar-commercial]`),o=e.querySelector(`[data-navbar-residential]`),u=e.querySelector(`[data-navbar-new-launch-project]`),d=e.querySelector(`[data-navbar-about]`),f=e.querySelector(`[data-navbar-contact]`);t.src=`${c}assets/image/Company%20Logo.jpg`,n.forEach(e=>{e.href=`${c}index.php`}),a.href=`${c}commercial/index.php`,o.href=`${c}residential/index.php`,u.href=`${c}new_launch_project/index.php`,d.href=`${c}about/index.php`,f.href=`${c}contact/index.php`;let p=s.length===0||s[0]===`index.php`?`home`:s[0],m={home:e.querySelector(`nav [data-navbar-home]`),commercial:a,residential:o,new_launch_project:u,about:d,contact:f};m[p]&&(m[p].classList.add(`border-ink`,`text-ink`),m[p].classList.remove(`border-transparent`));let h=e.querySelector(`[data-login-dialog]`),g=e.querySelector(`[data-login-open]`),_=e.querySelector(`[data-login-close]`),v=e.querySelector(`[data-login-form]`),y=`login`,b=()=>{window.location.href=`${c}dashboard/`},x=()=>{h.classList.add(`hidden`),h.classList.remove(`flex`),h.setAttribute(`aria-hidden`,`true`),g.focus()},S=()=>{h.classList.remove(`hidden`),h.classList.add(`flex`),h.setAttribute(`aria-hidden`,`false`),h.querySelector(`input`).focus()};g.addEventListener(`click`,S);let C=e=>{let t=l&&e?`logout`:e?`dashboard`:`login`;if(y!==t){if(y=t,g.removeEventListener(`click`,b),g.removeEventListener(`click`,S),e&&!l){g.textContent=`Dashboard`,g.removeAttribute(`data-login-open`),g.removeAttribute(`aria-haspopup`),g.removeAttribute(`aria-controls`),g.addEventListener(`click`,b);return}if(l&&e){g.textContent=`Log out`,g.dataset.logout=``,g.removeAttribute(`data-login-open`),g.removeAttribute(`aria-haspopup`),g.removeAttribute(`aria-controls`);return}}};_.addEventListener(`click`,x),h.addEventListener(`click`,e=>{e.target===h&&x()}),document.addEventListener(`keydown`,e=>{e.key===`Escape`&&h.getAttribute(`aria-hidden`)===`false`&&x()}),v.addEventListener(`submit`,async e=>{e.preventDefault();let t=v.elements.email.value.trim(),n=v.elements.password.value,i=v.querySelector(`button[type='submit']`);if(t&&n){i.disabled=!0,i.textContent=`Logging in...`;try{await r.login(t,n)}catch{alert(`Invalid username or password.`),i.disabled=!1,i.textContent=`Login`;return}window.location.href=`${c}dashboard/`}}),r.session().then(({user:e})=>C(e)).catch(()=>C(null))})}));export default o();

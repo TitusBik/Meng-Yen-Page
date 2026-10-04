@@ -109,8 +109,9 @@ const checkSession = async () => {
 };
 
 const propertyFields = [
-  "title", "listing_type", "price", "price_type", "built_up_size",
-  "built_up_unit", "land_size", "land_unit", "bedrooms", "bathrooms",
+  "title", "listing_type", "price", "price_type", "is_featured", "built_up_size",
+  "built_up_length", "built_up_width", "built_up_unit", "land_size", "land_length",
+  "land_width", "land_unit", "bedrooms", "bathrooms",
   "car_parks", "floors", "furnishing", "tenure", "expiry_year", "year_built",
   "ceiling_height", "floor_loading", "power_supply", "direction", "bumi_status",
   "maintenance_fee", "address", "area", "postcode", "category_id", "city_id",
@@ -154,7 +155,11 @@ const loadProperty = async () => {
   if (!data) throw new Error("Unable to load listing.");
   propertyFields.forEach((field) => {
     if (data[field] !== null && data[field] !== undefined && form.elements[field]) {
-      form.elements[field].value = data[field];
+      if (field === "is_featured") {
+        form.elements[field].checked = Boolean(Number(data[field]));
+      } else {
+        form.elements[field].value = data[field];
+      }
     }
   });
   if (data.description) {
@@ -203,13 +208,18 @@ form.addEventListener("submit", async (event) => {
       description: editor.root.innerHTML === "<p><br></p>" ? null : editor.root.innerHTML,
       listing_type: values.listing_type,
       price: Number(values.price),
+      is_featured: values.is_featured === "on",
       category_id: Number(values.category_id),
       city_id: cityId,
       other_city: isOtherCity ? otherCity : null,
       price_type: values.price_type,
       built_up_size: toNumberOrNull(values.built_up_size),
+      built_up_length: toNumberOrNull(values.built_up_length),
+      built_up_width: toNumberOrNull(values.built_up_width),
       built_up_unit: toTextOrNull(values.built_up_unit),
       land_size: toNumberOrNull(values.land_size),
+      land_length: toNumberOrNull(values.land_length),
+      land_width: toNumberOrNull(values.land_width),
       land_unit: toTextOrNull(values.land_unit),
       bedrooms: toNumberOrNull(values.bedrooms),
       bathrooms: toNumberOrNull(values.bathrooms),

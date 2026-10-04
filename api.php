@@ -65,6 +65,79 @@ try {
         jsonResponse(['categories' => $categories, 'cities' => $cities]);
     }
 
+    if ($action === 'schedule-tour') {
+        $requiredFields = [
+            'property_title', 'category', 'selected_date', 'tour_time',
+            'tour_type', 'contact_name', 'contact_email', 'contact_phone',
+            'contact_message',
+        ];
+        foreach ($requiredFields as $field) {
+            if (trim((string) ($body[$field] ?? '')) === '') {
+                jsonResponse(['error' => 'Please complete all tour request fields.'], 422);
+            }
+        }
+        $email = trim((string) $body['contact_email']);
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            jsonResponse(['error' => 'Please enter a valid email address.'], 422);
+        }
+        if (!in_array($body['tour_type'], ['in_person', 'video_chat'], true)) {
+            jsonResponse(['error' => 'Please choose a valid tour type.'], 422);
+        }
+        $allowedTimes = [
+            '10:00 am', '10:30 am', '11:00 am', '11:30 am', '12:00 pm',
+            '12:30 pm', '1:00 pm', '1:30 pm', '2:00 pm', '2:30 pm',
+            '3:00 pm', '3:30 pm', '4:00 pm', '4:30 pm', '5:00 pm',
+        ];
+        if (!in_array(strtolower((string) $body['tour_time']), $allowedTimes, true)) {
+            jsonResponse(['error' => 'Please choose a valid tour time.'], 422);
+        }
+        $subject = 'Property tour request: ' . str_replace(["\r", "\n"], ' ', (string) $body['property_title']);
+        $tourType = $body['tour_type'] === 'video_chat' ? 'Video Chat' : 'In Person';
+        $mailBody = implode("\n", [
+            'Property: ' . $body['property_title'],
+            'Category: ' . $body['category'],
+            'Date: ' . $body['selected_date'],
+            'Time: ' . $body['tour_time'],
+            'Tour type: ' . $tourType,
+            'Name: ' . $body['contact_name'],
+            'Email: ' . $email,
+            'Phone: ' . $body['contact_phone'],
+            '',
+            'Message:',
+            $body['contact_message'],
+        ]);
+        $headers = implode("\r\n", [
+            'From: Website Tour Request <cmyen.property@gmail.com>',
+            'Reply-To: ' . $email,
+            'Content-Type: text/plain; charset=UTF-8',
+        ]);
+        if (!mail('cmyen.property@gmail.com', $subject, $mailBody, $headers)) {
+            jsonResponse(['error' => 'We could not send your tour request right now. Please contact us by phone.'], 500);
+        }
+        jsonResponse(['ok' => true]);
+    }
+
+    if ($action === 'featured-listings') {
+        $statement = $pdo->query(
+            "SELECT p.id, p.title, p.price, p.price_type, p.address, p.area, p.media,
+                    pc.name AS category_name, c.name AS city_name
+             FROM properties p
+             LEFT JOIN property_categories pc ON pc.id = p.category_id
+             LEFT JOIN cities c ON c.id = p.city_id
+             WHERE p.is_featured = 1
+             ORDER BY p.created_at DESC
+             LIMIT 12",
+        );
+        $properties = $statement->fetchAll();
+        foreach ($properties as &$property) {
+            $property['media'] = is_string($property['media'])
+                ? (json_decode($property['media'], true) ?: [])
+                : [];
+        }
+        unset($property);
+        jsonResponse(['properties' => $properties]);
+    }
+
     if ($action === 'commercial-listings') {
         $conditions = ["pc.name = 'Commercial'"];
         $parameters = [];
@@ -254,14 +327,25 @@ try {
             $countStatement = $pdo->prepare('SELECT COUNT(*) FROM properties WHERE user_id = ?');
             $countStatement->execute([$userId]);
             $count = (int) $countStatement->fetchColumn();
-            $statement = $pdo->prepare('SELECT id, title, address, listing_type, price FROM properties WHERE user_id = ? ORDER BY created_at DESC LIMIT 5');
+            $featuredCountStatement = $pdo->prepare('SELECT COUNT(*) FROM properties WHERE user_id = ? AND is_featured = 1');
+            $featuredCountStatement->execute([$userId]);
+            $featuredCount = (int) $featuredCountStatement->fetchColumn();
+            $statement = $pdo->prepare('SELECT id, title, address, listing_type, price, media FROM properties WHERE user_id = ? ORDER BY created_at DESC LIMIT 5');
             $statement->execute([$userId]);
-            jsonResponse(['count' => $count, 'properties' => $statement->fetchAll()]);
+            $properties = $statement->fetchAll();
+            foreach ($properties as &$property) {
+                $property['media'] = is_string($property['media'])
+                    ? (json_decode($property['media'], true) ?: [])
+                    : [];
+            }
+            unset($property);
+            jsonResponse(['count' => $count, 'featured_count' => $featuredCount, 'properties' => $properties]);
         }
 
         $fields = [
-            'title', 'description', 'listing_type', 'price', 'category_id', 'city_id', 'other_city',
-            'price_type', 'built_up_size', 'built_up_unit', 'land_size', 'land_unit', 'bedrooms',
+            'title', 'description', 'listing_type', 'price', 'is_featured', 'category_id', 'city_id', 'other_city',
+            'price_type', 'built_up_size', 'built_up_length', 'built_up_width', 'built_up_unit', 'land_size',
+            'land_length', 'land_width', 'land_unit', 'bedrooms',
             'bathrooms', 'car_parks', 'floors', 'furnishing', 'tenure', 'expiry_year', 'year_built',
             'ceiling_height', 'floor_loading', 'power_supply', 'direction', 'bumi_status',
             'maintenance_fee', 'address', 'area', 'postcode', 'media',
@@ -270,9 +354,11 @@ try {
         foreach ($fields as $field) {
             $values[$field] = in_array($field, ['media'], true)
                 ? json_encode($body[$field] ?? null, JSON_UNESCAPED_SLASHES)
-                : (in_array($field, ['price', 'built_up_size', 'land_size', 'bedrooms', 'bathrooms', 'car_parks', 'expiry_year', 'year_built', 'ceiling_height', 'floor_loading', 'maintenance_fee', 'category_id', 'city_id'], true)
+                : (in_array($field, ['price', 'built_up_size', 'built_up_length', 'built_up_width', 'land_size', 'land_length', 'land_width', 'bedrooms', 'bathrooms', 'car_parks', 'expiry_year', 'year_built', 'ceiling_height', 'floor_loading', 'maintenance_fee', 'category_id', 'city_id'], true)
                     ? nullableNumber($body[$field] ?? null)
-                    : nullableText($body[$field] ?? null));
+                    : ($field === 'is_featured'
+                        ? (!empty($body[$field]) ? 1 : 0)
+                        : nullableText($body[$field] ?? null)));
         }
 
         if (!empty($body['id'])) {

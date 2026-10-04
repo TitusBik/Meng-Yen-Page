@@ -26,7 +26,9 @@ navbarTargets.forEach((target) => {
   const homeLinks = target.querySelectorAll("[data-navbar-home]");
   const commercialLink = target.querySelector("[data-navbar-commercial]");
   const residentialLink = target.querySelector("[data-navbar-residential]");
-  const newLaunchLink = target.querySelector("[data-navbar-new-launch-project]");
+  const newLaunchLink = target.querySelector(
+    "[data-navbar-new-launch-project]",
+  );
   const aboutLink = target.querySelector("[data-navbar-about]");
   const contactLink = target.querySelector("[data-navbar-contact]");
 
@@ -39,6 +41,25 @@ navbarTargets.forEach((target) => {
   newLaunchLink.href = `${siteRoot}new_launch_project/index.php`;
   aboutLink.href = `${siteRoot}about/index.php`;
   contactLink.href = `${siteRoot}contact/index.php`;
+
+  const activeSection =
+    pathSegments.length === 0 || pathSegments[0] === "index.php"
+      ? "home"
+      : pathSegments[0];
+
+  const linkMap = {
+    home: target.querySelector("nav [data-navbar-home]"),
+    commercial: commercialLink,
+    residential: residentialLink,
+    new_launch_project: newLaunchLink,
+    about: aboutLink,
+    contact: contactLink,
+  };
+
+  if (linkMap[activeSection]) {
+    linkMap[activeSection].classList.add("border-ink", "text-ink");
+    linkMap[activeSection].classList.remove("border-transparent");
+  }
 
   const loginDialog = target.querySelector("[data-login-dialog]");
   const loginOpenButton = target.querySelector("[data-login-open]");
@@ -66,11 +87,8 @@ navbarTargets.forEach((target) => {
   loginOpenButton.addEventListener("click", openLoginDialog);
 
   const setAuthenticatedAction = (user) => {
-    const nextActionState = isDashboard && user
-      ? "logout"
-      : user
-        ? "dashboard"
-        : "login";
+    const nextActionState =
+      isDashboard && user ? "logout" : user ? "dashboard" : "login";
 
     if (actionState === nextActionState) {
       return;
@@ -96,7 +114,6 @@ navbarTargets.forEach((target) => {
       loginOpenButton.removeAttribute("aria-controls");
       return;
     }
-
   };
 
   loginCloseButton.addEventListener("click", closeLoginDialog);
@@ -140,5 +157,8 @@ navbarTargets.forEach((target) => {
     window.location.href = `${siteRoot}dashboard/`;
   });
 
-  api.session().then(({ user }) => setAuthenticatedAction(user)).catch(() => setAuthenticatedAction(null));
+  api
+    .session()
+    .then(({ user }) => setAuthenticatedAction(user))
+    .catch(() => setAuthenticatedAction(null));
 });

@@ -32,7 +32,7 @@
           Year after year, I have been recognized with multiple industry
           awards — a testament to my commitment, professionalism, and
           client-first approach. Whether it’s residential, commercial, or
-          investment properties, I pride myself on offering bilingual
+          investment properties, <br>I pride myself on offering bilingual
           communication, transparent guidance, and tailored solutions that
           meet every client’s unique needs.
         </p>
@@ -47,7 +47,6 @@
 
     <section class="awards-section" aria-labelledby="awards-title">
       <div class="section-heading">
-        <p class="about-eyebrow">Recognition</p>
         <h2 id="awards-title">Award-Winning Track Record</h2>
       </div>
       <div class="awards-list">
@@ -101,18 +100,7 @@
     </section>
 
     <section class="why-me-section" aria-labelledby="why-me-title">
-      <div class="why-me-content">
-        <p class="about-eyebrow">Why Choose Me</p>
-        <h2 id="why-me-title">Why <span>Choose Me</span></h2>
-        <ul>
-          <li><span class="why-me-icon" aria-hidden="true">🏆</span><strong>Award-Winning Track Record</strong></li>
-          <li><span class="why-me-icon" aria-hidden="true">📍</span><strong>Deep Johor Market Knowledge</strong></li>
-          <li><span class="why-me-icon" aria-hidden="true">🤝</span><strong>Trusted by Clients</strong></li>
-          <li><span class="why-me-icon" aria-hidden="true">🌐</span><strong>Bilingual Communication</strong></li>
-          <li><span class="why-me-icon" aria-hidden="true">💼</span><strong>Residential &amp; Commercial Expertise</strong></li>
-          <li><span class="why-me-icon" aria-hidden="true">🚀</span><strong>Proven Results</strong></li>
-        </ul>
-      </div>
+
       <div class="why-me-image">
         <img src="../assets/image/Why%20me.jpg" alt="C.M. Yen at work in the Johor property market" loading="lazy" />
       </div>
