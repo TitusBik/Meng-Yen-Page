@@ -12,7 +12,11 @@ const customCityField = form.elements.other_city.closest("[data-custom-city-fiel
 const customCityInput = form.elements.other_city;
 const imageInput = form.elements.image;
 const imagePreview = document.querySelector("[data-image-preview]");
+const deleteButton = document.querySelector("[data-delete-listing]");
 let imageItems = [];
+if (!editId) {
+  deleteButton?.classList.add("hidden");
+}
 Quill.register({ "modules/table-better": QuillBetterTable }, true);
 const editor = new Quill("[data-description-editor]", {
   theme: "snow",
@@ -151,6 +155,7 @@ citySelect.addEventListener("change", updateCustomCityVisibility);
 
 const loadProperty = async () => {
   if (!editId) return;
+  deleteButton?.classList.remove("hidden");
   const { property: data } = await api.property(editId);
   if (!data) throw new Error("Unable to load listing.");
   propertyFields.forEach((field) => {
@@ -177,6 +182,18 @@ const loadProperty = async () => {
   updateCustomCityVisibility();
   setMessage("Editing this saved listing.");
 };
+
+deleteButton?.addEventListener("click", async () => {
+  if (!editId || !window.confirm("Delete this listing? This cannot be undone.")) return;
+  deleteButton.disabled = true;
+  try {
+    await api.deleteProperty(editId);
+    window.location.href = "../";
+  } catch (error) {
+    deleteButton.disabled = false;
+    setMessage(`Unable to delete listing: ${error.message}`, true);
+  }
+});
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();

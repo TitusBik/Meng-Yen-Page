@@ -22,6 +22,10 @@ export const api = {
   properties: () => request("properties"),
   property: (id) => request("properties", { query: `&id=${encodeURIComponent(id)}` }),
   saveProperty: (property) => request("properties", { method: "POST", body: property }),
+  deleteProperty: (id) => request("properties", {
+    method: "DELETE",
+    query: `&id=${encodeURIComponent(id)}`,
+  }),
   uploadImages: async (propertyId, files) => {
     const formData = new FormData();
     formData.append("property_id", propertyId);

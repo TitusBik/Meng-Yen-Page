@@ -387,6 +387,12 @@
             class="mt-6 w-full rounded-full bg-ink px-6 py-3 font-semibold text-paper transition hover:bg-muted">
             Save listing
           </button>
+          <button
+            type="button"
+            data-delete-listing
+            class="mt-3 w-full rounded-full border border-red-200 px-6 py-3 font-semibold text-red-700 transition hover:border-red-700 hover:bg-red-50">
+            Delete listing
+          </button>
           <p data-listing-message class="mt-4 hidden text-sm font-medium"></p>
         </section>
       </aside>

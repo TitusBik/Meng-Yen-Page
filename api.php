@@ -342,6 +342,41 @@ try {
             jsonResponse(['count' => $count, 'featured_count' => $featuredCount, 'properties' => $properties]);
         }
 
+        if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+            $propertyId = (int) ($_GET['id'] ?? $body['id'] ?? 0);
+            if ($propertyId < 1) {
+                jsonResponse(['error' => 'A valid listing is required.'], 422);
+            }
+
+            $statement = $pdo->prepare('SELECT media FROM properties WHERE id = ? AND user_id = ?');
+            $statement->execute([$propertyId, $userId]);
+            $property = $statement->fetch();
+            if (!$property) {
+                jsonResponse(['error' => 'Property not found.'], 404);
+            }
+
+            $statement = $pdo->prepare('DELETE FROM properties WHERE id = ? AND user_id = ?');
+            $statement->execute([$propertyId, $userId]);
+
+            $media = is_string($property['media']) ? json_decode($property['media'], true) : [];
+            $directory = __DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'image' . DIRECTORY_SEPARATOR . 'properties';
+            foreach (is_array($media) ? $media : [] as $item) {
+                $path = is_string($item)
+                    ? $item
+                    : (is_array($item) ? ($item['path'] ?? $item['data'] ?? null) : null);
+                if (!is_string($path) || !str_starts_with($path, 'assets/image/properties/')) {
+                    continue;
+                }
+                $filename = basename($path);
+                $filePath = $directory . DIRECTORY_SEPARATOR . $filename;
+                if (is_file($filePath) && !unlink($filePath)) {
+                    error_log('Unable to remove property photo: ' . $filePath);
+                }
+            }
+
+            jsonResponse(['ok' => true]);
+        }
+
         $fields = [
             'title', 'description', 'listing_type', 'price', 'is_featured', 'category_id', 'city_id', 'other_city',
             'price_type', 'built_up_size', 'built_up_length', 'built_up_width', 'built_up_unit', 'land_size',
