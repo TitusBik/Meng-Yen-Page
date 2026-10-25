@@ -119,7 +119,7 @@ try {
 
     if ($action === 'featured-listings') {
         $statement = $pdo->query(
-            "SELECT p.id, p.title, p.price, p.price_type, p.address, p.area, p.media,
+            "SELECT p.id, p.title, p.price, p.price_type, p.address, p.area, p.area AS region, p.media,
                     pc.name AS category_name, c.name AS city_name
              FROM properties p
              LEFT JOIN property_categories pc ON pc.id = p.category_id
@@ -158,8 +158,9 @@ try {
         }
         $statement = $pdo->prepare(
             'SELECT p.id, p.title, p.description, p.price, p.price_type, p.address, p.area,
+                    p.area AS region,
                     p.postcode, p.bedrooms, p.bathrooms, p.car_parks, p.media,
-                    c.name AS city_name, c.state
+                    pc.name AS category_name, c.name AS city_name, c.state
              FROM properties p
              LEFT JOIN property_categories pc ON pc.id = p.category_id
              LEFT JOIN cities c ON c.id = p.city_id

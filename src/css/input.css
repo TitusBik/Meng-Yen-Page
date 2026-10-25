@@ -675,7 +675,7 @@ body {
   gap: 0.75rem 1rem;
 }
 
-.regions-list span {
+.regions-list button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -691,7 +691,8 @@ body {
   transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.regions-list span:hover {
+.regions-list button:hover,
+.regions-list button.is-active {
   border-color: var(--color-lime);
   background: var(--color-lime);
   color: var(--color-ink);
@@ -699,7 +700,7 @@ body {
   box-shadow: 0 4px 12px color-mix(in srgb, var(--color-lime) 40%, transparent);
 }
 
-.regions-list span:active {
+.regions-list button:active {
   transform: translateY(0);
 }
 
@@ -769,7 +770,7 @@ body {
     gap: 0.5rem;
   }
 
-  .regions-list span {
+  .regions-list button {
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
   }

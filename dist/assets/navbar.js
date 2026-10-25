@@ -1,11 +1,11 @@
 import{n as e,t}from"./rolldown-runtime-B0Z9INg1.js";import{n,t as r}from"./api-B2yyDP7T.js";var i,a=e((()=>{i=`<header\r
-  class="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 lg:px-10 bg-[#FFFFFF]"\r
+  class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-10 bg-[#FFFFFF]"\r
 >\r
   <a\r
     href="#"\r
     data-navbar-home\r
     class="font-display text-xl font-extrabold tracking-tight"\r
-    ><img data-navbar-logo alt="Logo" class="h-10 w-auto"\r
+    ><img data-navbar-logo alt="Logo" class="h-14 w-auto"\r
   /></a>\r
   <nav\r
     class="hidden items-center gap-8 text-sm font-medium text-muted md:flex"\r

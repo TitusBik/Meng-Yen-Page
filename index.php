@@ -59,24 +59,35 @@
       <div class="regions-section-inner">
         <h2>We support these regions for Commercial Hub, Retail Space & Office Space</h2>
         <div class="regions-list" aria-label="Supported regions">
-          <span>JBCC</span>
-          <span>Pelangi</span>
-          <span>Sentosa</span>
-          <span>Permas Jaya</span>
-          <span>Pasir Gudang</span>
-          <span>Masai</span>
-          <span>Tebrau</span>
-          <span>Mt Austin</span>
-          <span>Setia Indah</span>
-          <span>Plentong</span>
-          <span>Senai</span>
-          <span>Kempas</span>
-          <span>Tampoi</span>
-          <span>Bukit Indah</span>
-          <span>Perling</span>
-          <span>Eco Botanic</span>
-          <span>Kulai</span>
+          <button type="button" data-region="JBCC">JBCC</button>
+          <button type="button" data-region="Pelangi">Pelangi</button>
+          <button type="button" data-region="Sentosa">Sentosa</button>
+          <button type="button" data-region="Permas Jaya">Permas Jaya</button>
+          <button type="button" data-region="Pasir Gudang">Pasir Gudang</button>
+          <button type="button" data-region="Masai">Masai</button>
+          <button type="button" data-region="Tebrau">Tebrau</button>
+          <button type="button" data-region="Mt Austin">Mt Austin</button>
+          <button type="button" data-region="Setia Indah">Setia Indah</button>
+          <button type="button" data-region="Plentong">Plentong</button>
+          <button type="button" data-region="Senai">Senai</button>
+          <button type="button" data-region="Kempas">Kempas</button>
+          <button type="button" data-region="Tampoi">Tampoi</button>
+          <button type="button" data-region="Bukit Indah">Bukit Indah</button>
+          <button type="button" data-region="Perling">Perling</button>
+          <button type="button" data-region="Eco Botanic">Eco Botanic</button>
+          <button type="button" data-region="Kulai">Kulai</button>
         </div>
+      </div>
+    </section>
+
+    <section data-region-listings class="featured-listing hidden" aria-live="polite">
+      <div class="mx-auto max-w-7xl px-6 py-16 lg:px-10">
+        <div class="flex items-end justify-between gap-4">
+          <div>
+            <h2 data-region-title class="mt-2 font-display text-3xl font-extrabold tracking-tight sm:text-4xl"></h2>
+          </div>
+        </div>
+        <div data-region-listings-grid class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4"></div>
       </div>
     </section>
 
