@@ -16,7 +16,7 @@ $listingCategoryLabel = htmlspecialchars($propertyCategory, ENT_QUOTES, 'UTF-8')
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="<?= $listingCategoryLabel ?> property details — Meng-Yen" />
   <title><?= $listingCategoryLabel ?> listing — Meng-Yen</title>
-  <link rel="stylesheet" href="../public/css/styles.css" />
+  <link rel="stylesheet" href="../public/css/styles.css?v=<?= filemtime(__DIR__ . '/../public/css/styles.css') ?>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
@@ -53,7 +53,7 @@ $listingCategoryLabel = htmlspecialchars($propertyCategory, ENT_QUOTES, 'UTF-8')
     </header>
 
     <section class="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1.65fr)_minmax(18rem,0.75fr)]">
-      <div>
+      <div class="min-w-0">
         <div data-detail-gallery class="grid min-h-80 grid-cols-2 gap-3"></div>
         <section class="mt-8 overflow-hidden rounded-2xl border border-ink/10 bg-white">
           <div class="flex overflow-x-auto border-b border-ink/10" role="tablist" aria-label="Property information">
@@ -167,7 +167,7 @@ $listingCategoryLabel = htmlspecialchars($propertyCategory, ENT_QUOTES, 'UTF-8')
   </main>
   <div data-footer></div>
   <script type="module" src="../dist/assets/navbar.js"></script>
-  <script type="module" src="../dist/assets/commercialDetail.js"></script>
+  <script type="module" src="../dist/assets/commercialDetail.js?v=<?= filemtime(__DIR__ . '/../dist/assets/commercialDetail.js') ?>"></script>
   <script type="module" src="../dist/assets/footer.js"></script>
 </body>
 

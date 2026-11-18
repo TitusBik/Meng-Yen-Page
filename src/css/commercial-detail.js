@@ -95,15 +95,208 @@ const render = (property) => {
     return;
   }
   gallery.replaceChildren();
-  media.forEach((source, index) => {
+  gallery.className = "detail-gallery";
+  const photos = media.map((source, index) => ({
+    src: source,
+    alt: `${property.title} photo ${index + 1}`,
+  }));
+  createPhotoViewer(gallery, photos);
+};
+
+// Main photo with next/previous, plus a row of small thumbnails below.
+// Clicking a thumbnail swaps the main photo; clicking the main photo opens
+// the full-screen lightbox.
+const createPhotoViewer = (gallery, photos) => {
+  const hasMany = photos.length > 1;
+  let current = 0;
+
+  const stage = document.createElement("div");
+  stage.className = "photo-stage";
+  stage.tabIndex = 0;
+  stage.setAttribute("aria-label", "Listing photos. Use left and right arrow keys to change photo.");
+
+  const openButton = document.createElement("button");
+  openButton.type = "button";
+  openButton.className = "photo-stage-open";
+  const mainImage = document.createElement("img");
+  mainImage.className = "photo-stage-image";
+  mainImage.draggable = false;
+  openButton.append(mainImage);
+
+  const prevButton = document.createElement("button");
+  prevButton.type = "button";
+  prevButton.className = "photo-stage-nav photo-stage-prev";
+  prevButton.setAttribute("aria-label", "Previous photo");
+  prevButton.innerHTML = "&#8249;";
+
+  const nextButton = document.createElement("button");
+  nextButton.type = "button";
+  nextButton.className = "photo-stage-nav photo-stage-next";
+  nextButton.setAttribute("aria-label", "Next photo");
+  nextButton.innerHTML = "&#8250;";
+
+  const counter = document.createElement("span");
+  counter.className = "photo-stage-counter";
+
+  const expandHint = document.createElement("span");
+  expandHint.className = "photo-stage-expand";
+  expandHint.setAttribute("aria-hidden", "true");
+  expandHint.textContent = "Click to enlarge";
+
+  stage.append(openButton, expandHint);
+  if (hasMany) stage.append(prevButton, nextButton, counter);
+
+  const strip = document.createElement("div");
+  strip.className = "photo-strip";
+  strip.setAttribute("role", "list");
+  const thumbs = photos.map((photo, index) => {
+    const thumb = document.createElement("button");
+    thumb.type = "button";
+    thumb.className = "photo-strip-thumb";
+    thumb.setAttribute("role", "listitem");
+    thumb.setAttribute("aria-label", `Show photo ${index + 1}`);
     const image = document.createElement("img");
-    image.src = source;
-    image.alt = `${property.title} photo ${index + 1}`;
-    image.className = index === 0
-      ? "h-full min-h-80 w-full rounded-2xl object-cover"
-      : "h-32 w-full rounded-xl object-cover";
-    gallery.append(image);
+    image.src = photo.src;
+    image.alt = "";
+    image.loading = index < 8 ? "eager" : "lazy";
+    thumb.append(image);
+    thumb.addEventListener("click", () => show(index));
+    strip.append(thumb);
+    return thumb;
   });
+
+  const show = (index) => {
+    current = (index + photos.length) % photos.length;
+    const photo = photos[current];
+    mainImage.src = photo.src;
+    mainImage.alt = photo.alt;
+    openButton.setAttribute("aria-label", `View ${photo.alt} full screen`);
+    counter.textContent = `${current + 1} / ${photos.length}`;
+    thumbs.forEach((thumb, i) => {
+      const active = i === current;
+      thumb.classList.toggle("is-active", active);
+      thumb.setAttribute("aria-current", active ? "true" : "false");
+    });
+    // Keep the active thumbnail visible without moving the whole page.
+    const thumb = thumbs[current];
+    const left = thumb.offsetLeft - (strip.clientWidth - thumb.clientWidth) / 2;
+    strip.scrollTo({ left, behavior: "smooth" });
+  };
+
+  // When the lightbox closes, keep the main photo on whatever was last viewed.
+  const lightbox = createLightbox(photos, (index) => show(index));
+
+  openButton.addEventListener("click", () => lightbox.open(current, openButton));
+  prevButton.addEventListener("click", () => show(current - 1));
+  nextButton.addEventListener("click", () => show(current + 1));
+  stage.addEventListener("keydown", (event) => {
+    if (!hasMany) return;
+    if (event.key === "ArrowRight") { event.preventDefault(); show(current + 1); }
+    if (event.key === "ArrowLeft") { event.preventDefault(); show(current - 1); }
+  });
+
+  let touchStartX = null;
+  stage.addEventListener("touchstart", (event) => {
+    touchStartX = event.touches[0].clientX;
+  }, { passive: true });
+  stage.addEventListener("touchend", (event) => {
+    if (touchStartX === null || !hasMany) return;
+    const distance = event.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(distance) > 50) show(current + (distance < 0 ? 1 : -1));
+    touchStartX = null;
+  });
+
+  gallery.append(stage);
+  if (hasMany) gallery.append(strip);
+  show(0);
+};
+
+const createLightbox = (photos, onClose) => {
+  const overlay = document.createElement("div");
+  overlay.className = "lightbox";
+  overlay.setAttribute("role", "dialog");
+  overlay.setAttribute("aria-modal", "true");
+  overlay.setAttribute("aria-label", "Listing photos");
+  overlay.setAttribute("aria-hidden", "true");
+  overlay.dataset.printHide = "";
+  overlay.innerHTML = `
+    <img class="lightbox-image" alt="" draggable="false" />
+    <button type="button" class="lightbox-button lightbox-close" aria-label="Close">&times;</button>
+    <button type="button" class="lightbox-button lightbox-prev" aria-label="Previous photo">&#8249;</button>
+    <button type="button" class="lightbox-button lightbox-next" aria-label="Next photo">&#8250;</button>
+    <p class="lightbox-counter" aria-live="polite"></p>`;
+  document.body.append(overlay);
+
+  const image = overlay.querySelector(".lightbox-image");
+  const closeButton = overlay.querySelector(".lightbox-close");
+  const prevButton = overlay.querySelector(".lightbox-prev");
+  const nextButton = overlay.querySelector(".lightbox-next");
+  const counter = overlay.querySelector(".lightbox-counter");
+  const hasMany = photos.length > 1;
+  prevButton.hidden = !hasMany;
+  nextButton.hidden = !hasMany;
+
+  let current = 0;
+  let returnFocus = null;
+  let touchStartX = null;
+
+  const show = (index) => {
+    current = (index + photos.length) % photos.length;
+    image.src = photos[current].src;
+    image.alt = photos[current].alt;
+    counter.textContent = `${current + 1} / ${photos.length}`;
+    // Preload neighbours so next/previous feels instant.
+    if (hasMany) {
+      [current + 1, current - 1].forEach((i) => {
+        new Image().src = photos[(i + photos.length) % photos.length].src;
+      });
+    }
+  };
+
+  const onKeydown = (event) => {
+    if (event.key === "Escape") close();
+    else if (event.key === "ArrowRight" && hasMany) show(current + 1);
+    else if (event.key === "ArrowLeft" && hasMany) show(current - 1);
+  };
+
+  const open = (index, trigger) => {
+    returnFocus = trigger || null;
+    show(index);
+    overlay.classList.add("is-open");
+    overlay.setAttribute("aria-hidden", "false");
+    document.body.classList.add("lightbox-open");
+    document.addEventListener("keydown", onKeydown);
+    closeButton.focus();
+  };
+
+  const close = () => {
+    overlay.classList.remove("is-open");
+    overlay.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("lightbox-open");
+    document.removeEventListener("keydown", onKeydown);
+    onClose?.(current);
+    returnFocus?.focus();
+  };
+
+  closeButton.addEventListener("click", close);
+  prevButton.addEventListener("click", () => show(current - 1));
+  nextButton.addEventListener("click", () => show(current + 1));
+  // Clicking the dark background (not the photo or buttons) closes it.
+  overlay.addEventListener("click", (event) => {
+    if (event.target === overlay) close();
+  });
+  // Swipe left/right on touch screens.
+  overlay.addEventListener("touchstart", (event) => {
+    touchStartX = event.touches[0].clientX;
+  }, { passive: true });
+  overlay.addEventListener("touchend", (event) => {
+    if (touchStartX === null || !hasMany) return;
+    const distance = event.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(distance) > 50) show(current + (distance < 0 ? 1 : -1));
+    touchStartX = null;
+  });
+
+  return { open };
 };
 
 const setupShare = () => {

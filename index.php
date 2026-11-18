@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Meng-Yen — Landing Page" />
-  <title>Meng-Yen — Landing Page</title>
+  <meta name="description" content="Find the best Johor commercial properties, residential, new-launch project, retail spaces, and office spaces for sale and rent in Johor Bahru." />
+  <title>Johor Commercial Property | Sale & Rental</title>
   <link rel="stylesheet" href="./public/css/styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -112,7 +112,7 @@
       </div>
     </section>
 
-    <section class="award-banner" aria-labelledby="award-banner-title" style="--award-banner-image: url('/Meng-Yen-Page/assets/image/Single Banner.jpg')">
+    <section class="award-banner" aria-labelledby="award-banner-title">
       <img class="award-banner-image" src="./assets/image/Single Banner.jpg" alt="" aria-hidden="true" />
       <div class="award-banner-content">
         <h3>Award-Winning Expertise in Real Estate Career</h3>

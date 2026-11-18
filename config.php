@@ -1,10 +1,22 @@
 <?php
+
 declare(strict_types=1);
 
-const DB_HOST = '127.0.0.1';
-const DB_NAME = 'meng_yen';
-const DB_USER = 'root';
-const DB_PASSWORD = '';
+$isLocalhost = in_array($_SERVER['SERVER_NAME'] ?? 'localhost', ['localhost', '127.0.0.1'], true);
+
+if ($isLocalhost) {
+    // XAMPP on your computer
+    define('DB_HOST', 'localhost');
+    define('DB_NAME', 'meng_yen');
+    define('DB_USER', 'root');
+    define('DB_PASSWORD', '');
+} else {
+    // Live hosting
+    define('DB_HOST', 'localhost');
+    define('DB_NAME', 'johorcom_');
+    define('DB_USER', 'mengyen');
+    define('DB_PASSWORD', 'AdminMengYen');
+}
 
 function database(): PDO
 {

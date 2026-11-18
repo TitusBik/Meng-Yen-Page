@@ -1,5 +1,10 @@
+const projectMarker = "/Meng-Yen-Page/";
+const apiPath = window.location.pathname.includes(projectMarker)
+  ? `${projectMarker}api.php`
+  : "/api.php";
+
 const request = async (action, options = {}) => {
-  const response = await fetch(`/Meng-Yen-Page/api.php?action=${action}${options.query || ""}`, {
+  const response = await fetch(`${apiPath}?action=${action}${options.query || ""}`, {
     method: options.method || "GET",
     headers: options.body ? { "Content-Type": "application/json" } : {},
     body: options.body ? JSON.stringify(options.body) : undefined,
@@ -30,7 +35,7 @@ export const api = {
     const formData = new FormData();
     formData.append("property_id", propertyId);
     files.forEach((file) => formData.append("images[]", file));
-    const response = await fetch("/Meng-Yen-Page/api.php?action=upload-images", {
+    const response = await fetch(`${apiPath}?action=upload-images`, {
       method: "POST",
       body: formData,
       credentials: "same-origin",
